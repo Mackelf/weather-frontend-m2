@@ -1,42 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./CSS/Style.css">
+  <meta charset="UTF-8">
+  <title>Pronóstico del tiempo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f3f4f6;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #111827;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-body {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-text {
+      font-size: 0.95rem;
+      color: #4b5563;
+    }
+
+    .card-text ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .card-text li + li {
+      margin-top: 0.25rem;
+    }
+
+    .card-text table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .card-text th,
+    .card-text td {
+      border: 1px solid #e5e7eb;
+      padding: 0.4rem 0.5rem;
+      text-align: left;
+    }
+
+    .card-text th {
+      background: #f9fafb;
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #065f46;
+      background: #d1fae5;
+    }
+  </style>
 </head>
 <body>
-    <div class="title">
-        <h1>Weather App</h1>
-    </div>
+  <h1>Pronóstico del tiempo</h1>
+
+  <div class="cards-container">
+    <!-- Card con listado -->
     <div class="card">
-        <div class="search">
-            <input type="text" placeholder="Enter city" id="city-search" />
-            <button id="search-button">
-                <img src="assets/img/search-icon.svg" alt="Search">
-            </button>
+      <div class="card-body">
+        <h2 class="card-title">Clima actual - Santiago</h2>
+        <div class="card-text">
+          <ul>
+            <li>Temperatura: 22°C</li>
+            <li>Sensación térmica: 21°C</li>
+            <li>Condición: Parcialmente nublado <span class="badge">Estable</span></li>
+            <li>Humedad: 60%</li>
+            <li>Viento: 10 km/h</li>
+          </ul>
         </div>
-        <div class="weather-details" style="display: none;">
-            <div class="city"></div>
-            <div class="weather">
-                <h1 class="temp"></h1>
-                <h2 class="description"></h2>
-            </div>
-            <img class="weather-icon" src="" alt="Weather icon">
-            <div class="details">
-                <div class="col">
-                    <img src="assets/img/humidity-icon.svg" alt="Humidity icon" />
-                    <span class="humidity"></span>
-                </div>
-                <div class="col">
-                    <img src="assets/img/wind-icon.svg" alt="Wind icon" />
-                    <span class="wind"></span>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <script src="app.js"></script>
+
+    <!-- Card con tabla -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Próximos 3 días</h2>
+        <div class="card-text">
+          <table>
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th>Mínima</th>
+                <th>Máxima</th>
+                <th>Condición</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Viernes</td>
+                <td>15°C</td>
+                <td>25°C</td>
+                <td>Soleado</td>
+              </tr>
+              <tr>
+                <td>Sábado</td>
+                <td>14°C</td>
+                <td>24°C</td>
+                <td>Parcialmente nublado</td>
+              </tr>
+              <tr>
+                <td>Domingo</td>
+                <td>13°C</td>
+                <td>23°C</td>
+                <td>Probabilidad de lluvia</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card extra de ejemplo -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Recomendaciones</h2>
+        <div class="card-text">
+          <ul>
+            <li>Usa bloqueador solar si la radiación es alta.</li>
+            <li>Lleva una chaqueta ligera para la noche.</li>
+            <li>Ten paraguas a mano en días con pronóstico de lluvia.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
