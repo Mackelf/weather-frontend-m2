@@ -5,13 +5,11 @@
   color: black;
 }
 
-// scss/abstracts/_mixins.scss
 @mixin flip-card-base {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: $spacing-sm;
   box-sizing: border-box;
 }
-

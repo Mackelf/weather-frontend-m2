@@ -1,5 +1,4 @@
-@use '../abstracts/mixins';
-@use '../abstracts/variables';
+
 
 .flip-card {
   background-color: transparent;
@@ -23,7 +22,7 @@
 }
 
 .flip-card-front, .flip-card-back {
-  @include mixins.flip-card-base;
+  @include flip-card-base;
   position: absolute;
   width: 100%;
   height: 100%;
