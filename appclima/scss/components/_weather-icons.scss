@@ -1,0 +1,19 @@
+.sunny {
+  @include weather-bg("../assets/img/WeatherIcons/v1/sunny.png", $sunny);
+}
+
+.p-cloudy {
+  @include weather-bg("../assets/img/WeatherIcons/v1/partly_cloudy.png", $p-cloudy);
+}
+
+.cloudy {
+  @include weather-bg("../assets/img/WeatherIcons/v1/cloudy.png", $cloudy);
+}
+
+.rain {
+  @include weather-bg("../assets/img/WeatherIcons/v1/rain.png", $rain);
+}
+
+.stormy {
+  @include weather-bg("../assets/img/WeatherIcons/v1/thunderstorms.png", $stormy);
+}

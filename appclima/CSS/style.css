@@ -1,19 +1,25 @@
-.card-img-top {
-    width: 59%;
-    height: auto;
-    border-radius: 8px 8px 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* estilo tarjeta flip */
+header .container h1 {
+  color: #333;
+}
+header nav ul.nav .nav-link {
+  color: #666;
+}
+header nav ul.nav .nav-link:hover {
+  color: #5e81ac;
+}
+
 .flip-card {
   background-color: transparent;
   width: 300px;
   height: 200px;
   border: 1px solid #f1f1f1;
-  perspective: 1000px; /* This gives the 3D effect */
+  perspective: 1000px;
 }
 
 .flip-card-inner {
@@ -22,7 +28,7 @@
   height: 100%;
   text-align: center;
   transition: transform 0.8s;
-  transform-style: preserve-3d; /* Preserves the 3D position of children */
+  transform-style: preserve-3d;
 }
 
 .flip-card:hover .flip-card-inner {
@@ -30,76 +36,71 @@
 }
 
 .flip-card-front, .flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden; /* Hides the back of the element during the flip */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
   box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
 }
 
 .flip-card-front {
-  background-color: #5e81ac; /* Example weather-appropriate color */
+  background-color: #5e81ac;
   color: white;
 }
 
 .flip-card-back {
-  background-color: #3b4252; /* Example weather-appropriate color */
+  background-color: #3b4252;
   color: white;
-  transform: rotateY(180deg); /* Starts hidden, rotated away */
+  transform: rotateY(180deg);
 }
-
-
 
 .sunny {
-    color:black;
-    background-image: url(../assets/img/google-weather-icons-main/google-weather-icons-main/v1/sunny.png);
-    background-size: cover;
-   background-color: rgb(77, 124, 226);
+  background-image: url("../assets/img/WeatherIcons/v1/sunny.png");
+  background-size: cover;
+  background-color: rgb(77, 124, 226);
+  color: black;
 }
-.p-cloudy {
-    color:black;
-    background-image: url(../assets/img/google-weather-icons-main/google-weather-icons-main/v1/partly_cloudy.png);
-    background-size: cover;
-    background-color: rgb(134, 153, 179);
 
-   
+.p-cloudy {
+  background-image: url("../assets/img/WeatherIcons/v1/partly_cloudy.png");
+  background-size: cover;
+  background-color: rgb(134, 153, 179);
+  color: black;
 }
 
 .cloudy {
-    color:black;
-    background-image: url(../assets/img/google-weather-icons-main/google-weather-icons-main/v1/cloudy.png);
-    background-size: cover;
-   background-color: rgb(97, 121, 156);
+  background-image: url("../assets/img/WeatherIcons/v1/cloudy.png");
+  background-size: cover;
+  background-color: rgb(97, 121, 156);
+  color: black;
 }
 
 .rain {
-    color:black;
-    background-image: url(../assets/img/google-weather-icons-main/google-weather-icons-main/v1/rain.png);
-    background-size: cover;
-   background-color: rgb(24, 49, 78);
+  background-image: url("../assets/img/WeatherIcons/v1/rain.png");
+  background-size: cover;
+  background-color: rgb(24, 49, 78);
+  color: black;
 }
 
 .stormy {
-    color:black;
-    background-image: url(../assets/img/google-weather-icons-main/google-weather-icons-main/v1/thunderstorms.png);
-    background-size: auto;
-   background-color: rgb(89, 75, 165);
+  background-image: url("../assets/img/WeatherIcons/v1/thunderstorms.png");
+  background-size: cover;
+  background-color: rgb(89, 75, 165);
+  color: black;
 }
 
-
-/* popover estilo  */
 .week-forecast {
   max-width: 400px;
   background: white;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .forecast-day {
@@ -112,4 +113,25 @@
 .forecast-day:last-child {
   border-bottom: none;
 }
-/*fin popover estilo  */
+
+/*
+
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+
+@use 'layout/footer';
+
+@use 'themes/default';
+
+@use 'components/button';
+@use 'components/card';
+@use 'components/flip-card';
+@use 'components/weather-icons';
+@use 'components/popover';
+
+@use 'base/typography';
+@use 'base/reset';
+@use 'vendors/normalize';
+*/
+
+/*# sourceMappingURL=style.css.map */

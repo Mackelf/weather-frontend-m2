@@ -1,0 +1,14 @@
+header {
+  .container h1 {
+    color: #333;
+  }
+  
+  nav ul.nav {
+    .nav-link {
+      color: #666;
+      &:hover {
+        color: $flip-front;
+      }
+    }
+  }
+}

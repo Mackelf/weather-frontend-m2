@@ -1,4 +1,21 @@
+// 1. ABSTRACTS (variables y mixins ANTES de components)
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+
+// 2. BASE
+@import 'base/reset';      // si lo tienes
+
+// 3. LAYOUT
+@import 'layout/header';   // si lo tienes
+
+// 4. COMPONENTS
+@import 'components/flip-card';
+@import 'components/weather-icons';
+@import 'components/popover';
+/*
+
 @use 'abstracts/variables';
+@use 'abstracts/mixins';
 
 @use 'layout/footer';
 
@@ -6,13 +23,12 @@
 
 @use 'components/button';
 @use 'components/card';
+@use 'components/flip-card';
+@use 'components/weather-icons';
+@use 'components/popover';
 
 @use 'base/typography';
 @use 'base/reset';
-
-@use 'utilities/mixins';
-
 @use 'vendors/normalize';
-
-
+*/
 

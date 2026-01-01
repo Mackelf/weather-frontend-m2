@@ -1,0 +1,19 @@
+.week-forecast {
+  max-width: 400px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: $spacing-md;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.forecast-day {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.forecast-day:last-child {
+  border-bottom: none;
+}

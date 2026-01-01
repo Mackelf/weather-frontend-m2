@@ -1,0 +1,17 @@
+@mixin weather-bg($image-path, $color) {
+  background-image: url($image-path);
+  background-size: cover;
+  background-color: $color;
+  color: black;
+}
+
+// scss/abstracts/_mixins.scss
+@mixin flip-card-base {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
