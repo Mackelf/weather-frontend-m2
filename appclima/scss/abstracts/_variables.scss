@@ -1,12 +1,20 @@
-// Colores clima
-$sunny: rgb(77, 124, 226);
-$p-cloudy: rgb(134, 153, 179);
+// Colores clima (existentes)
+$sunny: rgba(238, 223, 17, 0.815);
+$p-cloudy: rgb(204, 217, 235);
 $cloudy: rgb(97, 121, 156);
-$rain: rgb(24, 49, 78);
-$stormy: rgb(89, 75, 165);
+$rain: rgb(29, 85, 150);
+$stormy: rgb(84, 67, 179);
 
 $flip-front: #5e81ac;
-$flip-back: #3b4252;
+$flip-back: #2b1861;
+
+// NUEVOS: Weather Card Moderno
+$weather-card-light: #4fa8ff;        // Azul claro superior
+$weather-card-mid: #2272e8;          // Azul medio 70%
+$weather-card-dark: #1853b8;         // Azul oscuro inferior
+$weather-card-glow: rgba(255, 255, 255, 0.55); // Brillo radial blanco
+$weather-card-shadow-dark: rgba(0, 0, 0, 0.25); // Sombra externa
+$weather-card-shadow-light: rgba(255, 255, 255, 0.25); // Sombra interna
 
 // Espaciados
 $spacing-sm: 10px;

@@ -3,7 +3,7 @@
 .flip-card {
   background-color: transparent;
   width: 300px;
-  height: 200px;
+  height: 250px;
   border: 1px solid #f1f1f1;
   perspective: 1000px;
 }
@@ -38,4 +38,26 @@
   background-color: $flip-back;
   color: white;
   transform: rotateY(180deg);
+}
+
+
+// Sobreescribe el color de fondo de las clases clima existentes
+.p-cloudy {
+  background:
+    radial-gradient(circle at 30% 0%, $weather-card-glow, transparent 55%),
+    linear-gradient(180deg, $weather-card-light 0%, $weather-card-mid 70%, $weather-card-dark 100%);
+  
+  box-shadow:
+    0 18px 35px $weather-card-shadow-dark,
+    0 -4px 10px $weather-card-shadow-light inset;
+    
+  border-radius: 28px;
+  color: #fff;
+}
+
+// Para otras ciudades, crea variantes:
+.sunny {
+  background:
+    radial-gradient(circle at 30% 0%, $weather-card-glow, transparent 55%),
+    linear-gradient(180deg, #ffd700 0%, #ff8c00 70%, #e67e22 100%);
 }

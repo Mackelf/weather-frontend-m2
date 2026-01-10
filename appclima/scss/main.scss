@@ -4,15 +4,17 @@
 
 // 2. BASE
 @import 'base/reset';
+@import 'base/base';
 
 // 3. LAYOUT
 @import 'layout/header';
+@import 'layout/footer';
 
 // 4. COMPONENTES (tu CSS principal)
 @import 'components/flip-card';
 @import 'components/weather-icons';
 @import 'components/popover';
-
+@import 'components/card';
 // 5. UTILIDADES
 
 
