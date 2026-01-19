@@ -30,6 +30,7 @@ footer {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: auto;
 }
 
 .weather-card {
@@ -96,6 +97,8 @@ footer {
 
 /* This container is needed to position the front and back side */
 .flip-card-inner {
+  margin-top: 5px;
+  padding-top: 20px;
   position: relative;
   width: 100%;
   height: 100%;

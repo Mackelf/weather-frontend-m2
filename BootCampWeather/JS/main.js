@@ -80,6 +80,105 @@ const dataByCountry = {
       lluvia: "0%",
       fecha: "Lunes 15 Diciembre 2025"
     },
+
+    {
+      ciudad: "Rancagua",
+      temp: 25,
+      estado: "Parcialmente Nublado",
+      icono: "bi-cloud-sun",
+      tipo: "p-cloudy",
+      viento: "10 km/h",
+      humedad: "40%",
+      lluvia: "5%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+      ciudad: "Talca",
+      temp: 24,
+      estado: "Nublado",
+      icono: "bi-cloud",
+      tipo: "cloudy",
+      viento: "12 km/h",
+      humedad: "50%",
+      lluvia: "15%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Chillán",
+      temp: 20,
+      estado: "Nublado",
+      icono: "bi-cloud",
+      tipo: "cloudy",
+      viento: "14 km/h",
+      humedad: "60%",
+      lluvia: "20%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Concepción",
+      temp: 22,
+      estado: "Lluvioso",
+      icono: "bi-cloud-rain",
+      tipo: "rain",
+      viento: "18 km/h",
+      humedad: "75%",
+      lluvia: "70%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Temuco",
+      temp: 19,
+      estado: "Lluvioso",
+      icono: "bi-cloud-rain-fill",
+      tipo: "rain",
+      viento: "20 km/h",
+      humedad: "80%",
+      lluvia: "85%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Valdivia",
+      temp: 18,
+      estado: "Tormenta",
+      icono: "bi-cloud-lightning-rain",
+      tipo: "stormy",
+      viento: "22 km/h",
+      humedad: "85%",
+      lluvia: "90%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Puerto Montt",
+      temp: 16,
+      estado: "Lluvioso",
+      icono: "bi-cloud-rain",
+      tipo: "rain",
+      viento: "20 km/h",
+      humedad: "85%",
+      lluvia: "90%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Coyhaique",
+      temp: 14,
+      estado: "Nublado",
+      icono: "bi-cloud",
+      tipo: "cloudy",
+      viento: "15 km/h",
+      humedad: "70%",
+      lluvia: "30%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    { 
+      ciudad: "Punta Arenas", temp: 10, estado: "Nublado", icono: "bi-cloud", tipo: "cloudy", viento: "12 km/h", humedad: "65%", lluvia: "25%", fecha: "Lunes 15 Diciembre 2025" },
+
     // ...más ciudades
   ],
 
