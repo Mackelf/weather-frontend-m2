@@ -43,42 +43,42 @@ footer {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.p-cloudy {
+.weather-card--p-cloudy {
   background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.55), transparent 55%), linear-gradient(180deg, #4fa8ff 0%, #2272e8 70%, #1853b8 100%);
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25), 0 -4px 10px rgba(255, 255, 255, 0.25) inset;
   border-radius: 28px;
   color: #fff;
 }
 
-.sunny {
+.weather-card--sunny {
   background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.55), transparent 55%), linear-gradient(180deg, #ffd700 0%, #ff8c00 70%, #e67e22 100%);
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25), 0 -4px 10px rgba(255, 255, 255, 0.25) inset;
   border-radius: 28px;
   color: #fff;
 }
 
-.cloudy {
+.weather-card--cloudy {
   background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.55), transparent 55%), linear-gradient(180deg, #9fb3c8 0%, #6c7f99 60%, #4a5a73 100%);
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25), 0 -4px 10px rgba(255, 255, 255, 0.25) inset;
   border-radius: 28px;
   color: #fff;
 }
 
-.rain {
+.weather-card--rain {
   background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.3), transparent 55%), linear-gradient(180deg, #4e7fbf 0%, #355a8a 60%, #233b5c 100%);
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25), 0 -4px 10px rgba(255, 255, 255, 0.25) inset;
   border-radius: 28px;
   color: #fff;
 }
 
-.stormy {
+.weather-card--stormy {
   background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.2), transparent 55%), linear-gradient(180deg, #3b3f63 0%, #262845 60%, #15162a 100%);
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25), 0 -4px 10px rgba(255, 255, 255, 0.18) inset;
   border-radius: 28px;
   color: #fff;
 }
 
-.fog {
+.weather-card--fog {
   background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.7), transparent 55%), linear-gradient(180deg, #cfd8e4 0%, #b3bdcc 50%, #9aa3b3 100%);
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15), 0 -4px 10px rgba(255, 255, 255, 0.35) inset;
   border-radius: 28px;
@@ -96,7 +96,7 @@ footer {
 }
 
 /* This container is needed to position the front and back side */
-.flip-card-inner {
+.flip-card__inner {
   margin-top: 5px;
   padding-top: 20px;
   position: relative;
@@ -108,12 +108,12 @@ footer {
 }
 
 /* Do an horizontal flip when you move the mouse over the flip box container */
-.flip-card:hover .flip-card-inner {
+.flip-card:hover .flip-card__inner {
   transform: rotateY(180deg);
 }
 
 /* Position the front and back side */
-.flip-card-front, .flip-card-back {
+.flip-card__front, .flip-card__back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -122,13 +122,13 @@ footer {
 }
 
 /* Style the front side (fallback if image is missing) */
-.flip-card-front {
+.flip-card__front {
   background-color: #bbb;
   /* color: black;*/
 }
 
 /* Style the back side */
-.flip-card-back {
+.flip-card__back {
   background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.35), transparent 55%), linear-gradient(180deg, #4fa8ff 0%, #2272e8 70%, #1853b8 100%);
   color: #fff;
   transform: rotateY(180deg);

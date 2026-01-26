@@ -14,7 +14,7 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.p-cloudy {
+.weather-card--p-cloudy {
   background:
     radial-gradient(circle at 30% 0%, $weather-card-glow, transparent 55%),
     linear-gradient(180deg, $weather-card-light 0%, $weather-card-mid 70%, $weather-card-dark 100%);
@@ -27,7 +27,7 @@
   color: #fff;
 }
 
-.sunny {
+.weather-card--sunny {
   background:
     radial-gradient(circle at 30% 0%, $weather-card-glow, transparent 55%),
     linear-gradient(180deg, #ffd700 0%, #ff8c00 70%, #e67e22 100%);
@@ -40,7 +40,7 @@
   color: #fff;
 }
 
-.cloudy {
+.weather-card--cloudy {
   background:
     radial-gradient(circle at 30% 0%, $weather-card-glow, transparent 55%),
     linear-gradient(180deg, #9fb3c8 0%, #6c7f99 60%, #4a5a73 100%);
@@ -51,7 +51,7 @@
   color: #fff;
 }
 
-.rain {
+.weather-card--rain {
     
   background:
     radial-gradient(circle at 30% 0%, rgba(255,255,255,0.3), transparent 55%),
@@ -63,7 +63,7 @@
   color: #fff;
 }
 
-.stormy {
+.weather-card--stormy {
   background:
     radial-gradient(circle at 30% 0%, rgba(255,255,255,0.2), transparent 55%),
     linear-gradient(180deg, #3b3f63 0%, #262845 60%, #15162a 100%);
@@ -74,7 +74,7 @@
   color: #fff;
 }
 
-.fog {
+.weather-card--fog {
   background:
     radial-gradient(circle at 30% 0%, rgba(255,255,255,0.7), transparent 55%),
     linear-gradient(180deg, #cfd8e4 0%, #b3bdcc 50%, #9aa3b3 100%);

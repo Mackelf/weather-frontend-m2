@@ -1,11 +1,13 @@
 const dataByCountry = {
   chile: [
+    
+    
     {
       ciudad: "Arica",
       temp: 18,
       estado: "Nublado",
       icono: "bi-cloud-sun",
-      tipo: "p-cloudy",        // clase de fondo (sunny, rain, etc.)
+      tipo: "weather-card--cloudy",        // clase de fondo (sunny, rain, etc.)
       viento: "10 km/h",
       humedad: "40%",
       lluvia: "2%",
@@ -16,7 +18,7 @@ const dataByCountry = {
         temp: 20,
         estado: "Parcialmente Nublado",
         icono: "bi-cloud-sun",
-        tipo: "p-cloudy",
+        tipo: "weather-card--p-cloudy",
         viento: "12 km/h",
         humedad: "35%",
         lluvia: "1%",
@@ -27,7 +29,7 @@ const dataByCountry = {
         temp: 22,
         estado: "Soleado",
         icono: "bi-sun-fill",
-        tipo: "sunny",
+        tipo: "weather-card--sunny",
         viento: "15 km/h",
         humedad: "25%",
         lluvia: "0%",
@@ -38,7 +40,7 @@ const dataByCountry = {
         temp: 24,
         estado: "Soleado",
         icono: "bi-sun",
-        tipo: "sunny",
+        tipo: "weather-card--sunny",
         viento: "18 km/h",
         humedad: "20%",
         lluvia: "0%",
@@ -49,7 +51,7 @@ const dataByCountry = {
         temp: 21,
         estado: "Nublado",
         icono: "bi-cloud",
-        tipo: "cloudy",
+        tipo: "weather-card--cloudy",
         viento: "14 km/h",
         humedad: "45%",
         lluvia: "10%",
@@ -61,7 +63,7 @@ const dataByCountry = {
         temp: 19,
         estado: "Lluvioso",
         icono: "bi-cloud-rain-fill",
-        tipo: "rain",
+        tipo: "weather-card--rain",
         viento: "20 km/h",
         humedad: "70%",
         lluvia: "80%",
@@ -74,7 +76,7 @@ const dataByCountry = {
       temp: 26,
       estado: "Soleado",
       icono: "bi-sun-fill",
-      tipo: "sunny",
+      tipo: "weather-card--sunny",
       viento: "8 km/h",
       humedad: "30%",
       lluvia: "0%",
@@ -86,7 +88,7 @@ const dataByCountry = {
       temp: 25,
       estado: "Parcialmente Nublado",
       icono: "bi-cloud-sun",
-      tipo: "p-cloudy",
+      tipo: "weather-card--p-cloudy",
       viento: "10 km/h",
       humedad: "40%",
       lluvia: "5%",
@@ -97,7 +99,7 @@ const dataByCountry = {
       temp: 24,
       estado: "Nublado",
       icono: "bi-cloud",
-      tipo: "cloudy",
+      tipo: "weather-card--cloudy",
       viento: "12 km/h",
       humedad: "50%",
       lluvia: "15%",
@@ -109,7 +111,7 @@ const dataByCountry = {
       temp: 20,
       estado: "Nublado",
       icono: "bi-cloud",
-      tipo: "cloudy",
+      tipo: "weather-card--cloudy",
       viento: "14 km/h",
       humedad: "60%",
       lluvia: "20%",
@@ -121,7 +123,7 @@ const dataByCountry = {
       temp: 22,
       estado: "Lluvioso",
       icono: "bi-cloud-rain",
-      tipo: "rain",
+      tipo: "weather-card--rain",
       viento: "18 km/h",
       humedad: "75%",
       lluvia: "70%",
@@ -133,7 +135,7 @@ const dataByCountry = {
       temp: 19,
       estado: "Lluvioso",
       icono: "bi-cloud-rain-fill",
-      tipo: "rain",
+      tipo: "weather-card--rain",
       viento: "20 km/h",
       humedad: "80%",
       lluvia: "85%",
@@ -145,7 +147,7 @@ const dataByCountry = {
       temp: 18,
       estado: "Tormenta",
       icono: "bi-cloud-lightning-rain",
-      tipo: "stormy",
+      tipo: "weather-card--stormy",
       viento: "22 km/h",
       humedad: "85%",
       lluvia: "90%",
@@ -157,7 +159,7 @@ const dataByCountry = {
       temp: 16,
       estado: "Lluvioso",
       icono: "bi-cloud-rain",
-      tipo: "rain",
+      tipo: "weather-card--rain",
       viento: "20 km/h",
       humedad: "85%",
       lluvia: "90%",
@@ -169,7 +171,7 @@ const dataByCountry = {
       temp: 14,
       estado: "Nublado",
       icono: "bi-cloud",
-      tipo: "cloudy",
+      tipo: "weather-card--cloudy",
       viento: "15 km/h",
       humedad: "70%",
       lluvia: "30%",
@@ -177,7 +179,7 @@ const dataByCountry = {
     },
 
     { 
-      ciudad: "Punta Arenas", temp: 10, estado: "Nublado", icono: "bi-cloud", tipo: "cloudy", viento: "12 km/h", humedad: "65%", lluvia: "25%", fecha: "Lunes 15 Diciembre 2025" },
+      ciudad: "Punta Arenas", temp: 10, estado: "Nublado", icono: "bi-cloud", tipo: "weather-card--cloudy", viento: "12 km/h", humedad: "65%", lluvia: "25%", fecha: "Lunes 15 Diciembre 2025" },
 
     // ...más ciudades
   ],
@@ -188,7 +190,7 @@ const dataByCountry = {
       temp: 28,
       estado: "Soleado",
       icono: "bi-sun-fill",
-      tipo: "sunny",
+      tipo: "weather-card--sunny",
       viento: "10 km/h",
       humedad: "50%",
       lluvia: "0%",
@@ -199,7 +201,7 @@ const dataByCountry = {
         temp: 25,
         estado: "Parcialmente Nublado",
         icono: "bi-cloud-sun",
-        tipo: "p-cloudy",
+        tipo: "weather-card--p-cloudy",
         viento: "12 km/h",
         humedad: "55%",
         lluvia: "5%",
@@ -210,7 +212,7 @@ const dataByCountry = {
         temp: 23,
         estado: "Nublado",
         icono: "bi-cloud",
-        tipo: "cloudy",
+        tipo: "weather-card--cloudy",
         viento: "16 km/h",
         humedad: "50%",
         lluvia: "15%",
@@ -221,7 +223,7 @@ const dataByCountry = {
         temp: 20,
         estado: "Soleado",
         icono: "bi-sun-fill",
-        tipo: "sunny",
+        tipo: "weather-card--sunny",
         viento: "10 km/h",
         humedad: "30%",
         lluvia: "0%",
@@ -235,7 +237,7 @@ const dataByCountry = {
       temp: 24,
       estado: "Soleado",
       icono: "bi-sun-fill",
-      tipo: "sunny",
+      tipo: "weather-card--sunny",
       viento: "10 km/h",
       humedad: "40%",
       lluvia: "0%",
@@ -246,7 +248,7 @@ const dataByCountry = {
         temp: 22,
         estado: "Parcialmente Nublado",
         icono: "bi-cloud-sun",
-        tipo: "p-cloudy",
+        tipo: "weather-card--p-cloudy",
         viento: "12 km/h",
         humedad: "45%",
         lluvia: "5%",
@@ -257,7 +259,7 @@ const dataByCountry = {
         temp: 26,
         estado: "Soleado",
         icono: "bi-sun-fill",
-        tipo: "sunny",
+        tipo: "weather-card--sunny",
         viento: "8 km/h",
         humedad: "35%",
         lluvia: "0%",
@@ -268,7 +270,7 @@ const dataByCountry = {
         temp: 18,
         estado: "Nublado",
         icono:"bi-cloud", 
-        tipo:"cloudy", 
+        tipo:"weather-card--cloudy", 
         viento:"14 km/h", 
         humedad:"60%", 
         lluvia:"20%", 
@@ -282,7 +284,7 @@ const dataByCountry = {
       temp: 16,
         estado: "Nublado",
         icono: "bi-cloud",
-        tipo: "cloudy",
+        tipo: "weather-card--cloudy",
         viento: "10 km/h",
         humedad: "70%",
         lluvia: "30%",
@@ -301,9 +303,9 @@ function createFlipCard(ciudadData) {
 
   col.innerHTML = `
     <div class="flip-card">
-      <div class="flip-card-inner">
+      <div class="flip-card__inner">
 
-        <div class="flip-card-front ${ciudadData.tipo}">
+        <div class="flip-card__front ${ciudadData.tipo}">
           <h2>${ciudadData.ciudad}</h2>
           <p class="display-4">${ciudadData.temp}°C</p>
           <p class="mb-1">
@@ -312,7 +314,7 @@ function createFlipCard(ciudadData) {
           <p class="small">${ciudadData.fecha}</p>
         </div>
 
-        <div class="flip-card-back">
+        <div class="flip-card__back">
           <h3>Detalles del clima</h3>
           <p>Viento: ${ciudadData.viento}</p>
           <p>Humedad: ${ciudadData.humedad}</p>
