@@ -40,3 +40,9 @@ SCSS/
     └── _typography.scss
     
 
+2/2/2026
+-Se sube versión con còdigo Javascript Implementado. En la pagina 'pronosticos' que se puede acceder desde el navbar en la pàgina HOME. se cargan por default en card pronosticos de varias ciudades. esta la opcion de acceder a otros paises por el navbar 'escoge tu pais'-
+
+el código contiene unos arreglos, que se recorren para desplegar las cards.
+
+Se implementa una flip card para acceder a mas detalles del pronostico. y un pop over para el resto de la semana y con funciones se obtienen promedios de temperaturas y el estado mas frecuente durante la semana. 
