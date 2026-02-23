@@ -1,0 +1,41 @@
+// 1. VARIABLES Y MIXINS PRIMERO
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+
+// 2. BASE
+@import 'base/reset';
+@import 'base/base';
+
+// 3. LAYOUT
+@import 'layout/header';
+@import 'layout/footer';
+
+// 4. COMPONENTES (tu CSS principal)
+//@import 'components/flip-card';
+@import 'components/weather-icons';
+@import 'components/popover';
+@import 'components/card';
+@import 'components/_flip-cards';
+// 5. UTILIDADES
+
+
+
+/*
+// 1. VARIABLES Y MIXINS PRIMERO
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+
+// 2. BASE
+@use 'base/reset';
+
+// 3. LAYOUT
+@use 'layout/header';
+
+// 4. COMPONENTES (tu CSS principal)
+@use 'components/flip-card';
+@use 'components/weather-icons';
+@use 'components/popover';
+
+// 5. UTILIDADES
+@use 'utils/typography';
+*/

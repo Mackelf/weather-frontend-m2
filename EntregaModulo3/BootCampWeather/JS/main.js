@@ -1,0 +1,361 @@
+const dataByCountry = {
+  chile: [
+    
+    
+    {
+      ciudad: "Arica",
+      temp: 18,
+      estado: "Nublado",
+      icono: "bi-cloud-sun",
+      tipo: "weather-card--cloudy",        // clase de fondo (sunny, rain, etc.)
+      viento: "10 km/h",
+      humedad: "40%",
+      lluvia: "2%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Iquique",
+        temp: 20,
+        estado: "Parcialmente Nublado",
+        icono: "bi-cloud-sun",
+        tipo: "weather-card--p-cloudy",
+        viento: "12 km/h",
+        humedad: "35%",
+        lluvia: "1%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Antofagasta",
+        temp: 22,
+        estado: "Soleado",
+        icono: "bi-sun-fill",
+        tipo: "weather-card--sunny",
+        viento: "15 km/h",
+        humedad: "25%",
+        lluvia: "0%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Copiapo",
+        temp: 24,
+        estado: "Soleado",
+        icono: "bi-sun",
+        tipo: "weather-card--sunny",
+        viento: "18 km/h",
+        humedad: "20%",
+        lluvia: "0%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "La Serena",
+        temp: 21,
+        estado: "Nublado",
+        icono: "bi-cloud",
+        tipo: "weather-card--cloudy",
+        viento: "14 km/h",
+        humedad: "45%",
+        lluvia: "10%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+        ciudad: "Valparaíso",
+        temp: 19,
+        estado: "Lluvioso",
+        icono: "bi-cloud-rain-fill",
+        tipo: "weather-card--rain",
+        viento: "20 km/h",
+        humedad: "70%",
+        lluvia: "80%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+
+
+    {
+      ciudad: "Santiago",
+      temp: 26,
+      estado: "Soleado",
+      icono: "bi-sun-fill",
+      tipo: "weather-card--sunny",
+      viento: "8 km/h",
+      humedad: "30%",
+      lluvia: "0%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Rancagua",
+      temp: 25,
+      estado: "Parcialmente Nublado",
+      icono: "bi-cloud-sun",
+      tipo: "weather-card--p-cloudy",
+      viento: "10 km/h",
+      humedad: "40%",
+      lluvia: "5%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+      ciudad: "Talca",
+      temp: 24,
+      estado: "Nublado",
+      icono: "bi-cloud",
+      tipo: "weather-card--cloudy",
+      viento: "12 km/h",
+      humedad: "50%",
+      lluvia: "15%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Chillán",
+      temp: 20,
+      estado: "Nublado",
+      icono: "bi-cloud",
+      tipo: "weather-card--cloudy",
+      viento: "14 km/h",
+      humedad: "60%",
+      lluvia: "20%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Concepción",
+      temp: 22,
+      estado: "Lluvioso",
+      icono: "bi-cloud-rain",
+      tipo: "weather-card--rain",
+      viento: "18 km/h",
+      humedad: "75%",
+      lluvia: "70%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Temuco",
+      temp: 19,
+      estado: "Lluvioso",
+      icono: "bi-cloud-rain-fill",
+      tipo: "weather-card--rain",
+      viento: "20 km/h",
+      humedad: "80%",
+      lluvia: "85%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Valdivia",
+      temp: 18,
+      estado: "Tormenta",
+      icono: "bi-cloud-lightning-rain",
+      tipo: "weather-card--stormy",
+      viento: "22 km/h",
+      humedad: "85%",
+      lluvia: "90%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Puerto Montt",
+      temp: 16,
+      estado: "Lluvioso",
+      icono: "bi-cloud-rain",
+      tipo: "weather-card--rain",
+      viento: "20 km/h",
+      humedad: "85%",
+      lluvia: "90%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    {
+      ciudad: "Coyhaique",
+      temp: 14,
+      estado: "Nublado",
+      icono: "bi-cloud",
+      tipo: "weather-card--cloudy",
+      viento: "15 km/h",
+      humedad: "70%",
+      lluvia: "30%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+
+    { 
+      ciudad: "Punta Arenas", temp: 10, estado: "Nublado", icono: "bi-cloud", tipo: "weather-card--cloudy", viento: "12 km/h", humedad: "65%", lluvia: "25%", fecha: "Lunes 15 Diciembre 2025" },
+
+    // ...más ciudades
+  ],
+
+  argentina: [
+    {
+      ciudad: "Buenos Aires",
+      temp: 28,
+      estado: "Soleado",
+      icono: "bi-sun-fill",
+      tipo: "weather-card--sunny",
+      viento: "10 km/h",
+      humedad: "50%",
+      lluvia: "0%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Córdoba",
+        temp: 25,
+        estado: "Parcialmente Nublado",
+        icono: "bi-cloud-sun",
+        tipo: "weather-card--p-cloudy",
+        viento: "12 km/h",
+        humedad: "55%",
+        lluvia: "5%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Rosario",
+        temp: 23,
+        estado: "Nublado",
+        icono: "bi-cloud",
+        tipo: "weather-card--cloudy",
+        viento: "16 km/h",
+        humedad: "50%",
+        lluvia: "15%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Mendoza",
+        temp: 20,
+        estado: "Soleado",
+        icono: "bi-sun-fill",
+        tipo: "weather-card--sunny",
+        viento: "10 km/h",
+        humedad: "30%",
+        lluvia: "0%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    // mismo formato de objetos
+  ],
+    peru: [
+    {
+      ciudad: "Lima",
+      temp: 24,
+      estado: "Soleado",
+      icono: "bi-sun-fill",
+      tipo: "weather-card--sunny",
+      viento: "10 km/h",
+      humedad: "40%",
+      lluvia: "0%",
+      fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Arequipa",
+        temp: 22,
+        estado: "Parcialmente Nublado",
+        icono: "bi-cloud-sun",
+        tipo: "weather-card--p-cloudy",
+        viento: "12 km/h",
+        humedad: "45%",
+        lluvia: "5%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Trujillo",
+        temp: 26,
+        estado: "Soleado",
+        icono: "bi-sun-fill",
+        tipo: "weather-card--sunny",
+        viento: "8 km/h",
+        humedad: "35%",
+        lluvia: "0%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    {
+        ciudad: "Cusco",
+        temp: 18,
+        estado: "Nublado",
+        icono:"bi-cloud", 
+        tipo:"weather-card--cloudy", 
+        viento:"14 km/h", 
+        humedad:"60%", 
+        lluvia:"20%", 
+        fecha:"Lunes 15 Diciembre 2025"
+    },
+    // mismo formato de objetos
+  ],
+    colombia : [
+    {
+      ciudad: "Bogotá",
+      temp: 16,
+        estado: "Nublado",
+        icono: "bi-cloud",
+        tipo: "weather-card--cloudy",
+        viento: "10 km/h",
+        humedad: "70%",
+        lluvia: "30%",
+        fecha: "Lunes 15 Diciembre 2025"
+    },
+    
+    ],
+
+};
+
+// 2. Crea UNA tarjeta flip
+
+function createFlipCard(ciudadData) {
+  const col = document.createElement("div");
+  col.className = "col-md-4 mb-4 d-flex justify-content-center";
+
+  col.innerHTML = `
+    <div class="flip-card">
+      <div class="flip-card__inner">
+
+        <div class="flip-card__front ${ciudadData.tipo}">
+          <h2>${ciudadData.ciudad}</h2>
+          <p class="display-4">${ciudadData.temp}°C</p>
+          <p class="mb-1">
+            <i class="bi ${ciudadData.icono} me-2"></i>${ciudadData.estado}
+          </p>
+          <p class="small">${ciudadData.fecha}</p>
+        </div>
+
+        <div class="flip-card__back">
+          <h3>Detalles del clima</h3>
+          <p>Viento: ${ciudadData.viento}</p>
+          <p>Humedad: ${ciudadData.humedad}</p>
+          <p>Prob. lluvia: ${ciudadData.lluvia}</p>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  return col;
+}
+
+// 3. Dibuja TODAS las tarjetas de un país
+function renderCountry(countryKey) {
+  const cardsContainer = document.getElementById("cards-container");
+  const ciudades = dataByCountry[countryKey] || [];
+
+  cardsContainer.innerHTML = ""; // limpia
+
+  ciudades.forEach(ciudadData => {
+    const card = createFlipCard(ciudadData);
+    cardsContainer.appendChild(card);
+  });
+}
+
+
+
+// 4. Conecta dropdown + carga inicial
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdown = document.getElementById("countryDropdown");
+
+  dropdown.addEventListener("click", e => {
+    const link = e.target.closest(".dropdown-item");
+    if (!link) return;
+    e.preventDefault();
+
+    const countryKey = link.dataset.country; // "chile", "argentina"
+    renderCountry(countryKey);
+  });
+
+  // País por defecto
+  renderCountry("chile");
+});
