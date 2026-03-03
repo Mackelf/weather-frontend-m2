@@ -1,623 +1,100 @@
-const dataByCountry = {
-  chile: [
-    {
-      ciudad: "Arica",
-      temp: 18,
-      estado: "Nublado",
-      icono: "bi-cloud-sun",
-      tipo: "weather-card--cloudy",
-      viento: "10 km/h",
-      humedad: "40%",
-      lluvia: "2%",
-      fecha: "Lunes 15 Diciembre 2025",
-      pronostico: [
-        {
-          dia: "Martes",
-          tMin: 15,
-          tMax: 22,
-          estado: "Parcialmente nublado",
-          icono: "bi-cloud-sun",
-        },
-        {
-          dia: "Miércoles",
-          tMin: 14,
-          tMax: 21,
-          estado: "Lluvia débil",
-          icono: "bi-cloud-rain",
-        },
-        {
-          dia: "Jueves",
-          tMin: 13,
-          tMax: 20,
-          estado: "Despejado",
-          icono: "bi-sun",
-        },
-      ],
-    },
+/*TO DO LIST:
+Proyecto Clima - Bootcamp Update
+Identificar endpoint/URL final de la API del clima
+Crear fetchWeatherData() con fetch/async-await y manejo de errores
+Reemplazar array fijo por respuesta de la API (normalizar estructura)
+Crear función saveWeatherData(data) con localStorage
+Crear función loadWeatherData() con caché local y expiración por timestamp
+Crear componente Vue con data(): weatherData, loading, error
+Llamar loadWeatherData() en mounted() y asignar a this.weatherData
+Crear tarjetas con v-for y pasar datos a componentes hijo con props
+Eliminar renderizado manual del DOM y usar solo plantillas Vue
+Revisar JSON de la API y mapear campos a flip card (frente/reverso) y popover
+Actualizar cálculo de promedios y estado más repetido con nuevas props del JSON
+Probar con casos borde: ciudades distintas, sin datos, error de API
 
-    {
-      ciudad: "Iquique",
-      temp: 20,
-      estado: "Parcialmente Nublado",
-      icono: "bi-cloud-sun",
-      tipo: "weather-card--p-cloudy",
-      viento: "12 km/h",
-      humedad: "35%",
-      lluvia: "1%",
-      fecha: "Lunes 15 Diciembre 2025",
-      pronostico: [
-        {
-          dia: "Martes",
-          tMin: 16,
-          tMax: 23,
-          estado: "Parcialmente nublado",
-          icono: "bi-cloud-sun",
-        },
-        {
-          dia: "Miércoles",
-          tMin: 15,
-          tMax: 22,
-          estado: "Nublado",
-          icono: "bi-cloudy",
-        },
-        {
-          dia: "Jueves",
-          tMin: 15,
-          tMax: 24,
-          estado: "Despejado",
-          icono: "bi-sun",
-        },
-        {
-          dia: "Viernes",
-          tMin: 18,
-          tMax: 26,
-          estado: "Despejado",
-          icono: "bi-sun",
-        },
-        {
-          dia: "Sabado",
-          tMin: 20,
-          tMax: 28,
-          estado: "Despejado",
-          icono: "bi-sun",
-        },
-      ],
-    },
 
-    {
-      ciudad: "Antofagasta",
-      temp: 22,
-      estado: "Soleado",
-      icono: "bi-sun-fill",
-      tipo: "weather-card--sunny",
-      viento: "15 km/h",
-      humedad: "25%",
-      lluvia: "0%",
-      fecha: "Lunes 15 Diciembre 2025",
-      pronostico: [
-        {
-          dia: "Martes",
-          tMin: 16,
-          tMax: 23,
-          estado: "Parcialmente nublado",
-          icono: "bi-cloud-sun",
-        },
-        {
-          dia: "Miércoles",
-          tMin: 15,
-          tMax: 20,
-          estado: "Nublado",
-          icono: "bi-cloudy",
-        },
-        {
-          dia: "Jueves",
-          tMin: 15,
-          tMax: 24,
-          estado: "Despejado",
-          icono: "bi-sun",
-        },
-      ]
-    },
-    {
-      ciudad: "Copiapo",
-      temp: 24,
-      estado: "Soleado",
-      icono: "bi-sun",
-      tipo: "weather-card--sunny",
-      viento: "18 km/h",
-      humedad: "20%",
-      lluvia: "0%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    {
-      ciudad: "La Serena",
-      temp: 21,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "14 km/h",
-      humedad: "45%",
-      lluvia: "10%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
 
-    {
-      ciudad: "Valparaíso",
-      temp: 19,
-      estado: "Lluvioso",
-      icono: "bi-cloud-rain-fill",
-      tipo: "weather-card--rain",
-      viento: "20 km/h",
-      humedad: "70%",
-      lluvia: "80%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
+*/
+// Mapeo de ciudades 
+const CITIES = [
+  "Arica", "Iquique", "Antofagasta", "Copiapo", "La Serena", "Valparaiso", "Santiago", "Rancagua", "Talca", "Chillán", "Concepción", "Temuco", "Valdivia", "Puerto Montt", "Coyhaique", "Punta Arenas", 
+];
 
-    {
-      ciudad: "Santiago",
-      temp: 26,
-      estado: "Soleado",
-      icono: "bi-sun-fill",
-      tipo: "weather-card--sunny",
-      viento: "8 km/h",
-      humedad: "30%",
-      lluvia: "0%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
 
-    {
-      ciudad: "Rancagua",
-      temp: 25,
-      estado: "Parcialmente Nublado",
-      icono: "bi-cloud-sun",
-      tipo: "weather-card--p-cloudy",
-      viento: "10 km/h",
-      humedad: "40%",
-      lluvia: "5%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    {
-      ciudad: "Talca",
-      temp: 24,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "12 km/h",
-      humedad: "50%",
-      lluvia: "15%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
 
-    {
-      ciudad: "Chillán",
-      temp: 20,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "14 km/h",
-      humedad: "60%",
-      lluvia: "20%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
 
-    {
-      ciudad: "Concepción",
-      temp: 22,
-      estado: "Lluvioso",
-      icono: "bi-cloud-rain",
-      tipo: "weather-card--rain",
-      viento: "18 km/h",
-      humedad: "75%",
-      lluvia: "70%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
 
-    {
-      ciudad: "Temuco",
-      temp: 19,
-      estado: "Lluvioso",
-      icono: "bi-cloud-rain-fill",
-      tipo: "weather-card--rain",
-      viento: "20 km/h",
-      humedad: "80%",
-      lluvia: "85%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
 
-    {
-      ciudad: "Valdivia",
-      temp: 18,
-      estado: "Tormenta",
-      icono: "bi-cloud-lightning-rain",
-      tipo: "weather-card--stormy",
-      viento: "22 km/h",
-      humedad: "85%",
-      lluvia: "90%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
+    // ─── WMO Weather Code → { label, emoji } ─────────────────────────────────
+    const WEATHER_CODES = {
+      0:  { label: "Despejado",            emoji: "☀️" },
+      1:  { label: "Mainly Clear",         emoji: "🌤️" },
+      2:  { label: "Parcial Nublado",        emoji: "⛅" },
+      3:  { label: "Overcast",             emoji: "☁️" },
+      45: { label: "Niebla",                  emoji: "🌫️" },
+      48: { label: "Icy Fog",              emoji: "🌫️" },
+      51: { label: "Light Drizzle",        emoji: "🌦️" },
+      53: { label: "Moderate Drizzle",     emoji: "🌦️" },
+      55: { label: "Dense Drizzle",        emoji: "🌧️" },
+      61: { label: "Slight Rain",          emoji: "🌧️" },
+      63: { label: "Moderate Rain",        emoji: "🌧️" },
+      65: { label: "Heavy Rain",           emoji: "🌧️" },
+      71: { label: "Slight Snowfall",      emoji: "🌨️" },
+      73: { label: "Moderate Snowfall",    emoji: "❄️" },
+      75: { label: "Heavy Snowfall",       emoji: "❄️" },
+      77: { label: "Snow Grains",          emoji: "🌨️" },
+      80: { label: "Slight Showers",       emoji: "🌦️" },
+      81: { label: "Moderate Showers",     emoji: "🌧️" },
+      82: { label: "Violent Showers",      emoji: "⛈️" },
+      85: { label: "Slight Snow Showers",  emoji: "🌨️" },
+      86: { label: "Heavy Snow Showers",   emoji: "❄️" },
+      95: { label: "Tormenta Electrica",         emoji: "⛈️" },
+      96: { label: "Tormenta Electrica Sin Granizo", emoji: "⛈️" }, // 96: { label: "Thunderstorm w/ Hail", emoji: "⛈️" },
+      99: { label: "Tormenta Electrica Con Granizo", emoji: "⛈️" },
+    };
 
-    {
-      ciudad: "Puerto Montt",
-      temp: 16,
-      estado: "Lluvioso",
-      icono: "bi-cloud-rain",
-      tipo: "weather-card--rain",
-      viento: "20 km/h",
-      humedad: "85%",
-      lluvia: "90%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
+function getWeather(code) {
+  return WEATHER_CODES[code] ?? { label: "Desconocido", emoji:"🌡️" };
+}
 
-    {
-      ciudad: "Coyhaique",
-      temp: 14,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "15 km/h",
-      humedad: "70%",
-      lluvia: "30%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
 
-    {
-      ciudad: "Punta Arenas",
-      temp: 10,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "12 km/h",
-      humedad: "65%",
-      lluvia: "25%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
+    const API_URL = "https://api.open-meteo.com/v1/forecast?latitude=-18.4746,-20.2133,-23.6509,-27.3668,-29.9027,-33.0472,-33.4489,-34.1708,-35.4264,-36.0667,-36.8270,-38.7359,-39.8142,-41.4693,-45.5752,-53.1638&longitude=-70.2979,-70.1503,-70.3975,-70.3322,-71.2519,-71.6127,-70.6693,-70.7444,-71.6554,-71.9167,-73.0498,-72.5904,-73.2459,-72.9411,-72.0662,-70.9171&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=America/Santiago"
 
-    // ...más ciudades
-  ],
+fetch(API_URL)
+.then((response) => response.json())
+.then((data) => {
+  console.log(data)
+  grid.innerHTML = "";
 
-  argentina: [
-    {
-      ciudad: "Buenos Aires",
-      temp: 28,
-      estado: "Soleado",
-      icono: "bi-sun-fill",
-      tipo: "weather-card--sunny",
-      viento: "10 km/h",
-      humedad: "50%",
-      lluvia: "0%",
-      fecha: "Lunes 15 Diciembre 2025",
-      pronostico: [
-        {
-          dia: "Martes",
-          tMin: 25,
-          tMax: 30,
-          estado: "Soleado",
-          icono: "bi-sun-fill",
-        },
-        {
-          dia: "Miércoles",
-          tMin: 23,
-          tMax: 28,
-          estado: "Soleado",
-          icono: "bi-sun-fill",
-        },
-        {
-          dia: "Jueves",
-          tMin: 21,
-          tMax: 26,
-          estado: "Soleado",
-          icono: "bi-sun-fill",
-        },
-        {
-          dia: "Viernes",
-          tMin: 19,
-          tMax: 24,
-          estado: "Soleado",
-          icono: "bi-sun-fill",
-        },
-      ],
-    },
-            
-    {
-      ciudad: "Córdoba",
-      temp: 25,
-      estado: "Parcialmente Nublado",
-      icono: "bi-cloud-sun",
-      tipo: "weather-card--p-cloudy",
-      viento: "12 km/h",
-      humedad: "55%",
-      lluvia: "5%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    {
-      ciudad: "Rosario",
-      temp: 23,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "16 km/h",
-      humedad: "50%",
-      lluvia: "15%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    {
-      ciudad: "Mendoza",
-      temp: 20,
-      estado: "Soleado",
-      icono: "bi-sun-fill",
-      tipo: "weather-card--sunny",
-      viento: "10 km/h",
-      humedad: "30%",
-      lluvia: "0%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    // mismo formato de objetos
-  ],
-  peru: [
-    {
-      ciudad: "Lima",
-      temp: 24,
-      estado: "Soleado",
-      icono: "bi-sun-fill",
-      tipo: "weather-card--sunny",
-      viento: "10 km/h",
-      humedad: "40%",
-      lluvia: "0%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    {
-      ciudad: "Arequipa",
-      temp: 22,
-      estado: "Parcialmente Nublado",
-      icono: "bi-cloud-sun",
-      tipo: "weather-card--p-cloudy",
-      viento: "12 km/h",
-      humedad: "45%",
-      lluvia: "5%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    {
-      ciudad: "Trujillo",
-      temp: 26,
-      estado: "Soleado",
-      icono: "bi-sun-fill",
-      tipo: "weather-card--sunny",
-      viento: "8 km/h",
-      humedad: "35%",
-      lluvia: "0%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    {
-      ciudad: "Cusco",
-      temp: 18,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "14 km/h",
-      humedad: "60%",
-      lluvia: "20%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-    // mismo formato de objetos
-  ],
-  colombia: [
-    {
-      ciudad: "Bogotá",
-      temp: 16,
-      estado: "Nublado",
-      icono: "bi-cloud",
-      tipo: "weather-card--cloudy",
-      viento: "10 km/h",
-      humedad: "70%",
-      lluvia: "30%",
-      fecha: "Lunes 15 Diciembre 2025",
-    },
-  ],
-};
+const locations= Array.isArray(data) ? data : [data];
+console.log(locations);
+locations.forEach((loc, i) => {
+  const city    = CITIES[i] ?? `Location ${i + 1}`;
+  const temp    = loc.current.temperature_2m;
+  const code    = loc.current.weather_code;
+  const wx      = getWeather(code);
+  const maxTemp = loc.daily.temperature_2m_max[0];
+  const minTemp = loc.daily.temperature_2m_min[0];
 
-// 2. Crea UNA tarjeta flip
-/*
-function createFlipCard(ciudadData) {
-  const col = document.createElement("div");
-  col.className = "col-md-4 mb-4 d-flex justify-content-center";
-
-  col.innerHTML = `
-    <div class="flip-card">
-      <div class="flip-card__inner">
-
-        <div class="flip-card__front ${ciudadData.tipo}">
-          <h2>${ciudadData.ciudad}</h2>
-          <p class="display-4">${ciudadData.temp}°C</p>
-          <p class="mb-1">
-            <i class="bi ${ciudadData.icono} me-2"></i>${ciudadData.estado}
-          </p>
-          <p class="small">${ciudadData.fecha}</p>
-        </div>
-
-        <div class="flip-card__back">
-          <h3>Detalles del clima</h3>
-          <p>Viento: ${ciudadData.viento}</p>
-          <p>Humedad: ${ciudadData.humedad}</p>
-          <p>Prob. lluvia: ${ciudadData.lluvia}</p>
-
-            <button
-            class="btn-primary rounded btn-block btn btn-sm mt-2 js-detalles-pronostico"
-            type="button"
-          >
-            Ver pronóstico semanal
-          </button>
-
-        </div>
-
-      </div>
+  const card = document.createElement("div");
+  card.className = "card";
+  card.style.animationDelay = `${i * 40}ms`;
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="city-name">${city}</div>
+      <div class="weather-icon">${wx.emoji}</div>
+    </div>
+    <div class="temp-now">${temp}<span>°C</span></div>
+    <div class="weather-desc">${wx.label}</div>
+    <div class="temp-range">
+      <span class="temp-max">↑ ${maxTemp}°C</span>
+      <span class="temp-min">↓ ${minTemp}°C</span>
     </div>
   `;
-}*/
-function createFlipCard(ciudadData) {
-  const col = document.createElement("div");
-  col.className = "col-md-4 mb-4 d-flex justify-content-center";
-
-  col.innerHTML = `
-    <div class="flip-card">
-      <div class="flip-card__inner">
-
-        <div class="flip-card__front ${ciudadData.tipo}">
-          <h2 class="mt-3 mb-2">${ciudadData.ciudad}</h2>
-          <p class="display-4">${ciudadData.temp}°C</p>
-          <p class="mb-1">
-            <i class="bi ${ciudadData.icono} me-2"></i>${ciudadData.estado}
-          </p>
-          <p class="small">${ciudadData.fecha}</p>
-        </div>
-
-        <div class="flip-card__back">
-          <h4 class="mb-2 mt-3">Detalles del clima</h4>
-          <p>Viento: ${ciudadData.viento}</p>
-          <p>Humedad: ${ciudadData.humedad}</p>
-          <p>Prob. lluvia: ${ciudadData.lluvia}</p>
-
-          <button
-            class="btn btn-block btn-round btn-outline btn-light mt-2 js-detalles-pronostico"
-            type="button">
-            <span>Ver pronóstico semanal</span>
-          </button>
-        </div>
-
-      </div>
-    </div>
-  `;
-
-  // Antes aquí tenías el alert; ahora va el modal:
-  const btnDetalles = col.querySelector(".js-detalles-pronostico");
-  if (btnDetalles) {
-    btnDetalles.addEventListener("click", () => {
-      const pronostico = ciudadData.pronostico || [];
-
-      const modal = document.getElementById("forecast-modal");
-      const title = document.getElementById("forecast-title");
-      const content = document.getElementById("forecast-content");
-
-      // Título con nombre de ciudad
-      title.textContent = `Pronóstico para ${ciudadData.ciudad}`;
-
-      // Construir HTML de la tabla/lista con los días
-      if (pronostico.length === 0) {
-        content.innerHTML = "<p>No hay pronóstico disponible.</p>";
-      } else {
-        // === NUEVO: Cálculos de promedios y estado ===
-        const tempsMin = pronostico
-          .map((dia) => parseFloat(dia.tMin))
-          .filter((t) => !isNaN(t));
-        const tempsMax = pronostico
-          .map((dia) => parseFloat(dia.tMax))
-          .filter((t) => !isNaN(t));
-
-        const avgMin =
-          tempsMin.length > 0
-            ? (tempsMin.reduce((a, b) => a + b, 0) / tempsMin.length).toFixed(1)
-            : "N/D";
-        const avgMax =
-          tempsMax.length > 0
-            ? (tempsMax.reduce((a, b) => a + b, 0) / tempsMax.length).toFixed(1)
-            : "N/D";
-
-        // Estado más repetido
-        // Estado más repetido + su icono
-        const estadosCount = {};
-        pronostico.forEach((dia) => {
-          estadosCount[dia.estado] = (estadosCount[dia.estado] || 0) + 1;
-        });
-        const masRepetido = Object.entries(estadosCount).sort(
-          ([, a], [, b]) => b - a,
-        )[0];
-        const estadoMasRepetido = masRepetido ? masRepetido[0] : "N/D";
-
-        // Buscar icono del primer día con ese estado
-        const diaRepresentativo = pronostico.find(
-          (dia) => dia.estado === estadoMasRepetido,
-        );
-        const iconoMasRepetido = diaRepresentativo
-          ? diaRepresentativo.icono
-          : "";
-        // === FIN NUEVO ===
-
-        let html = "<table class='table table-sm mb-0'>";
-        html +=
-          "<thead><tr><th>Día</th><th>Mín</th><th>Máx</th><th>Estado</th></tr></thead><tbody>";
-
-        pronostico.forEach((dia) => {
-          html += `
-          <tr>
-            <td>${dia.dia}</td>
-            <td>${dia.tMin}°C</td>
-            <td>${dia.tMax}°C</td>
-            <td><i class="bi ${dia.icono}"></i> ${dia.estado}</td>
-          </tr>
-        `;
-        });
-
-        html += "</tbody></table>";
-        html += `<p class='small mt-2'><strong>Resumen semanal</strong>
-        <br> T Min Prom: <strong>${avgMin}°C</strong> | T Max Prom: <strong>${avgMax}°C</strong>
-<br> Estado: <i class="bi ${iconoMasRepetido}"></i> <strong>${estadoMasRepetido}</strong></p>`;
-        // === FIN CAMBIADO ===
-        content.innerHTML = html;
-      }
-
-      // Mostrar modal
-      modal.classList.add("show");
-    });
-  }
-
-  return col;
-}
-
-// 3. Dibuja TODAS las tarjetas de un país
-function renderCountry(countryKey) {
-  const cardsContainer = document.getElementById("cards-container");
-  
-  if (!cardsContainer) {return;};
-
-
-  const ciudades = dataByCountry[countryKey] || [];
-
-  cardsContainer.innerHTML = ""; // limpia
-
-  ciudades.forEach((ciudadData) => {
-    const card = createFlipCard(ciudadData);
-    cardsContainer.appendChild(card);
-  });
-}
-
-const forecastModal = document.getElementById("forecast-modal");
-const forecastClose = document.getElementById("forecast-close");
-
-if (forecastClose && forecastModal) {
-  forecastClose.addEventListener("click", () => {
-    forecastModal.classList.remove("show");
-  });
-
-  // cerrar al hacer clic fuera de la caja
-  forecastModal.addEventListener("click", (e) => {
-    if (e.target === forecastModal) {
-      forecastModal.classList.remove("show");
-    }
-  });
-}
-
-// 4. Conecta dropdown + carga inicial
-document.addEventListener("DOMContentLoaded", () => {
-  const dropdown = document.getElementById("countryDropdown");
-
-  dropdown.addEventListener("click", (e) => {
-    const link = e.target.closest(".dropdown-item");
-    if (!link) return;
-    e.preventDefault();
-
-    const countryKey = link.dataset.country; // "chile", "argentina"
-    renderCountry(countryKey);
-  });
-
-  // País por defecto
-  renderCountry("chile");
+  grid.appendChild(card);
 });
+
+}).catch(err => {
+        grid.innerHTML = `<div class="error">Failed to load weather data.<br><small>${err.message}</small></div>`;
+      });
