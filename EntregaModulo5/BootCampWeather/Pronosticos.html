@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     
 
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./CSS/styles.css" />
   </head>
 
   <body>
@@ -73,23 +73,11 @@
 
 <!-- Contenedor de tarjetas -->
 <main>
-  <div class="container my-4">
-    <div id="cards-container" class="row"></div>
-  </div>
+<div class="grid row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="grid">
+  <div class="loading">Fetching weather data</div>
+</div>
 </main>
 
-
-
-
-
-<!-- Overlay + modal genérico para pronóstico -->
-<div id="forecast-modal" class="modal-overlay">
-  <div class="modal-box">
-    <button class="modal-close" id="forecast-close">&times;</button>
-    <h3 id="forecast-title">Pronóstico semanal</h3>
-    <div id="forecast-content"></div>
-  </div>
-</div>
 
 
 

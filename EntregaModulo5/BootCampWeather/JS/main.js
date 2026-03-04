@@ -16,85 +16,174 @@ Probar con casos borde: ciudades distintas, sin datos, error de API
 
 
 */
-// Mapeo de ciudades 
+// Mapeo de ciudades
 const CITIES = [
-  "Arica", "Iquique", "Antofagasta", "Copiapo", "La Serena", "Valparaiso", "Santiago", "Rancagua", "Talca", "Chillán", "Concepción", "Temuco", "Valdivia", "Puerto Montt", "Coyhaique", "Punta Arenas", 
+  "Arica",
+  "Iquique",
+  "Antofagasta",
+  "Copiapo",
+  "La Serena",
+  "Valparaiso",
+  "Santiago",
+  "Rancagua",
+  "Talca",
+  "Chillán",
+  "Concepción",
+  "Temuco",
+  "Valdivia",
+  "Puerto Montt",
+  "Coyhaique",
+  "Punta Arenas",
 ];
 
+// ─── WMO Weather Code → { label, emoji } ─────────────────────────────────
+const WEATHER_CODES = {
+  0: { label: "Despejado", emoji: "☀️" },
+  1: { label: "Casi despejado", emoji: "🌤️" },
+  2: { label: "Parcialmente nublado", emoji: "⛅" },
+  3: { label: "Nublado", emoji: "☁️" },
 
+  45: { label: "Con niebla", emoji: "🌫️" },
+  48: { label: "Niebla helada", emoji: "🌫️" },
 
+  51: { label: "Llovizna suave", emoji: "🌦️" },
+  53: { label: "Llovizna", emoji: "🌦️" },
+  55: { label: "Llovizna fuerte", emoji: "🌧️" },
 
+  61: { label: "Lluvia débil", emoji: "🌧️" },
+  63: { label: "Lluvia", emoji: "🌧️" },
+  65: { label: "Lluvia fuerte", emoji: "🌧️" },
 
+  71: { label: "Nieve débil", emoji: "🌨️" },
+  73: { label: "Nieve", emoji: "❄️" },
+  75: { label: "Mucha nieve", emoji: "❄️" },
+  77: { label: "Granitos de nieve", emoji: "🌨️" },
 
-    // ─── WMO Weather Code → { label, emoji } ─────────────────────────────────
-    const WEATHER_CODES = {
-      0:  { label: "Despejado",            emoji: "☀️" },
-      1:  { label: "Mainly Clear",         emoji: "🌤️" },
-      2:  { label: "Parcial Nublado",        emoji: "⛅" },
-      3:  { label: "Overcast",             emoji: "☁️" },
-      45: { label: "Niebla",                  emoji: "🌫️" },
-      48: { label: "Icy Fog",              emoji: "🌫️" },
-      51: { label: "Light Drizzle",        emoji: "🌦️" },
-      53: { label: "Moderate Drizzle",     emoji: "🌦️" },
-      55: { label: "Dense Drizzle",        emoji: "🌧️" },
-      61: { label: "Slight Rain",          emoji: "🌧️" },
-      63: { label: "Moderate Rain",        emoji: "🌧️" },
-      65: { label: "Heavy Rain",           emoji: "🌧️" },
-      71: { label: "Slight Snowfall",      emoji: "🌨️" },
-      73: { label: "Moderate Snowfall",    emoji: "❄️" },
-      75: { label: "Heavy Snowfall",       emoji: "❄️" },
-      77: { label: "Snow Grains",          emoji: "🌨️" },
-      80: { label: "Slight Showers",       emoji: "🌦️" },
-      81: { label: "Moderate Showers",     emoji: "🌧️" },
-      82: { label: "Violent Showers",      emoji: "⛈️" },
-      85: { label: "Slight Snow Showers",  emoji: "🌨️" },
-      86: { label: "Heavy Snow Showers",   emoji: "❄️" },
-      95: { label: "Tormenta Electrica",         emoji: "⛈️" },
-      96: { label: "Tormenta Electrica Sin Granizo", emoji: "⛈️" }, // 96: { label: "Thunderstorm w/ Hail", emoji: "⛈️" },
-      99: { label: "Tormenta Electrica Con Granizo", emoji: "⛈️" },
-    };
+  80: { label: "Chubascos débiles", emoji: "🌦️" },
+  81: { label: "Chubascos", emoji: "🌧️" },
+  82: { label: "Chubascos fuertes", emoji: "⛈️" },
+
+  85: { label: "Chubascos débiles de nieve", emoji: "🌨️" },
+  86: { label: "Chubascos de nieve fuertes", emoji: "❄️" },
+
+  95: { label: "Tormenta eléctrica", emoji: "⛈️" },
+  96: { label: "Tormenta eléctrica con algo de granizo", emoji: "⛈️" },
+  99: { label: "Tormenta eléctrica con mucho granizo", emoji: "⛈️" },
+};
 
 function getWeather(code) {
-  return WEATHER_CODES[code] ?? { label: "Desconocido", emoji:"🌡️" };
+  return WEATHER_CODES[code] ?? { label: "Desconocido", emoji: "🌡️" };
+}
+
+function getCardClassFromCode(code) {
+  // Sol / despejado
+  if (code === 0 || code === 1) return "weather-card--sunny";
+
+  // Parcialmente nublado
+  if (code === 2) return "weather-card--p-cloudy";
+
+  // Nublado
+  if (code === 3) return "weather-card--cloudy";
+
+  // Niebla
+  if (code === 45 || code === 48) return "weather-card--fog";
+
+  // Lluvia / llovizna / chubascos
+  if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return "weather-card--rain";
+
+  // Lluvia fuerte
+  if (code === 65 || code === 82) return "weather-card--rain";
+
+  // Nieve
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return "weather-card--snowy";
+
+  // Tormenta
+  if ([95, 96, 99].includes(code)) return "weather-card--stormy";
+
+  // Fallback
+  return "card-default";
 }
 
 
-    const API_URL = "https://api.open-meteo.com/v1/forecast?latitude=-18.4746,-20.2133,-23.6509,-27.3668,-29.9027,-33.0472,-33.4489,-34.1708,-35.4264,-36.0667,-36.8270,-38.7359,-39.8142,-41.4693,-45.5752,-53.1638&longitude=-70.2979,-70.1503,-70.3975,-70.3322,-71.2519,-71.6127,-70.6693,-70.7444,-71.6554,-71.9167,-73.0498,-72.5904,-73.2459,-72.9411,-72.0662,-70.9171&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=America/Santiago"
+function getIconClassFromCode(code) {
+  // Sol / despejado
+  if (code === 0 || code === 1) return "bi bi-sun-fill";
+
+  // Parcialmente nublado
+  if (code === 2) return "bi bi-cloud-sun-fill";
+
+  // Nublado
+  if (code === 3) return "bi bi-cloud-fill";
+
+  // Niebla
+  if (code === 45 || code === 48) return "bi bi-cloud-fog2-fill";
+
+  // Lluvia / chubascos (sin nieve)
+  if ([51, 53, 55, 61, 63, 65, 80, 81].includes(code))
+    return "bi bi-cloud-rain-fill";
+
+  // Nieve / chubascos de nieve
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return "bi bi-snow2";
+
+  // Tormenta
+  if ([95, 96, 99].includes(code)) return "bi bi-cloud-lightning-rain-fill";
+
+  // Fallback
+  return "bi bi-thermometer-half";
+}
+
+const API_URL =
+  "https://api.open-meteo.com/v1/forecast?latitude=-18.4746,-20.2133,-23.6509,-27.3668,-29.9027,-33.0472,-33.4489,-34.1708,-35.4264,-36.0667,-36.8270,-38.7359,-39.8142,-41.4693,-45.5752,-53.1638&longitude=-70.2979,-70.1503,-70.3975,-70.3322,-71.2519,-71.6127,-70.6693,-70.7444,-71.6554,-71.9167,-73.0498,-72.5904,-73.2459,-72.9411,-72.0662,-70.9171&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=America/Santiago";
+const grid = document.getElementById("grid");
 
 fetch(API_URL)
-.then((response) => response.json())
-.then((data) => {
-  console.log(data)
-  grid.innerHTML = "";
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+    grid.innerHTML = "";
 
-const locations= Array.isArray(data) ? data : [data];
-console.log(locations);
-locations.forEach((loc, i) => {
-  const city    = CITIES[i] ?? `Location ${i + 1}`;
-  const temp    = loc.current.temperature_2m;
-  const code    = loc.current.weather_code;
-  const wx      = getWeather(code);
-  const maxTemp = loc.daily.temperature_2m_max[0];
-  const minTemp = loc.daily.temperature_2m_min[0];
+    const locations = Array.isArray(data) ? data : [data];
+    console.log(locations);
 
-  const card = document.createElement("div");
-  card.className = "card";
-  card.style.animationDelay = `${i * 40}ms`;
-  card.innerHTML = `
-    <div class="card-header">
-      <div class="city-name">${city}</div>
-      <div class="weather-icon">${wx.emoji}</div>
+    locations.forEach((loc, i) => {
+      const city = CITIES[i] ?? `Location ${i + 1}`;
+      const temp = loc.current.temperature_2m;
+      const code = loc.current.weather_code;
+      const wx = getWeather(code);
+      const maxTemp = loc.daily.temperature_2m_max[0];
+      const minTemp = loc.daily.temperature_2m_min[0];
+
+      // Columna Bootstrap
+      const iconClass = getIconClassFromCode(code);
+      const cardClass = getCardClassFromCode(code);
+
+      const col = document.createElement("div");
+      col.className = "col d-flex justify-content-center";
+
+      col.innerHTML = `
+  <div class="card weather-card ${cardClass}">
+    <div class="card-header d-flex justify-content-between letter-spacing: 1px">
+      <span class="weather-dot"></span>
+      <span class="small text-uppercase">${city}</span>
+      <span class="small text-uppercase">${new Date().toLocaleDateString("es-CL", { day: "2-digit", month: "short" })}</span>
     </div>
-    <div class="temp-now">${temp}<span>°C</span></div>
-    <div class="weather-desc">${wx.label}</div>
-    <div class="temp-range">
+<hr>
+    <div class="weather-main text-center">
+      <i class="${iconClass} weather-main__icon"></i>
+      <div class="temp-now">${temp}<span>°C</span></div>
+      <div class="weather-desc">${wx.label}</div>
+    </div>
+
+    <div class="temp-range d-flex justify-content-between mt-2 small">
       <span class="temp-max">↑ ${maxTemp}°C</span>
       <span class="temp-min">↓ ${minTemp}°C</span>
     </div>
-  `;
-  grid.appendChild(card);
-});
+  </div>
+`;
 
-}).catch(err => {
-        grid.innerHTML = `<div class="error">Failed to load weather data.<br><small>${err.message}</small></div>`;
-      });
+      grid.appendChild(col);
+    });
+  })
+  .catch((err) => {
+    grid.innerHTML = `<div class="error">Failed to load weather data.<br><small>${err.message}</small></div>`;
+  });
