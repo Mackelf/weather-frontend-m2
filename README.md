@@ -1,86 +1,158 @@
-# Weather Frontend M2
+# 🌤️ WeatherApp Chile — Documentación técnica
 
-Proyecto de portafolio del Bootcamp **Desarrollo de Aplicaciones Front-End Trainee**.  
-Aplicación web que muestra pronósticos del clima usando tarjetas interactivas y un modelo de estilos basado en **Sass + BEM**.
-
-Repositorio:  
-https://github.com/Mackelf/weather-frontend-m2.git
+Aplicación web que muestra el clima actual y el pronóstico de 7 días para 16 ciudades de Chile, usando la API pública de Open-Meteo.
 
 ---
 
-## Estructura general
+## Arquitectura general
 
-- `index.html`: página principal (Home).
-- `pronosticos.html`: vista de pronósticos con tarjetas de clima (accesible desde el navbar).
-- Otros archivos HTML: pruebas y ejercicios de código asociados al bootcamp.
+El código está dividido en dos clases con responsabilidades separadas:
 
-La hoja de estilos principal compilada es `css/style.css`, generada a partir del archivo `scss/main.scss`.
+**`WeatherApiClient`** — solo se comunica con la API. Recibe la URL en el constructor y expone un único método `fetchWeatherData()`. Si en el futuro se cambia la fuente de datos, solo se toca esta clase.
+
+**`WeatherApp`** — orquesta todo lo demás: caché, normalización de datos, renderizado de tarjetas y popovers. Recibe el cliente como dependencia en el constructor (*inyección de dependencias*), lo que facilita el testing con clientes falsos (mocks).
 
 ---
 
-## Modelo Sass (7-1)
+## Flujo principal
 
-El proyecto utiliza una estructura Sass tipo 7-1, organizada de la siguiente forma:
+```
+app.init()
+  │
+  ├─ loadWeatherData()
+  │     ├─ ¿Existe caché válido (< 6h)?
+  │     │     └─ SÍ → this.lugares = cached → renderCards()
+  │     └─ NO ↓
+  │
+  ├─ apiClient.fetchWeatherData()   ← llama a Open-Meteo
+  │
+  ├─ normalizeLocations()           ← transforma la respuesta cruda
+  │
+  ├─ saveWeatherData()              ← guarda en localStorage con timestamp
+  │
+  └─ renderCards()                  ← dibuja las tarjetas en el DOM
+```
 
-```text
-SCSS/
-├── main.scss              // Archivo principal (compila a css/style.css)
-├── abstracts/
-│   ├── _variables.scss    // Colores, tipografías, espaciados, etc.
-│   └── _mixins.scss       // Mixins reutilizables
-├── base/
-│   └── _reset.scss        // Estilos base / reset
-├── components/
-│   ├── _flip-card.scss    // Componente de tarjetas giratorias
-│   ├── _weather-icons.scss// Iconos y estados del clima
-│   └── _popover.scss      // Estilos del pop-up / modal de pronóstico semanal
-├── layout/
-│   ├── _header.scss       // Navbar y cabecera
-│   └── _cards-grid.scss   // Grid de tarjetas de clima
-└── utils/
-    └── _typography.scss   // Utilidades tipográficas
-Las clases siguen la convención BEM para bloques, elementos y modificadores (.flip-card__front, .weather-card--sunny, etc.).
+---
 
-Lógica de pronósticos (JavaScript)
-En la página Pronósticos se carga, por defecto, una serie de tarjetas de clima para varias ciudades.
-La navegación permite cambiar de país mediante el selector “Escoge tu país” del navbar.
+## Caché (localStorage)
 
-Los datos se modelan en arreglos/objetos agrupados por país (dataByCountry), que incluyen: ciudad, temperatura actual, estado, icono, viento, humedad, probabilidad de lluvia y fecha.
+Para evitar llamadas innecesarias a la API, los datos se guardan en `localStorage` con un TTL de **6 horas**.
 
-un arreglo de pronostico semanal por ciudad (días siguientes con T° mínima, T° máxima y estado).
+| Clave | Valor |
+|-------|-------|
+| `weatherCache` | `{ timestamp, data[] }` |
 
-Una función recorre estos arreglos para generar dinámicamente las flip cards en el DOM.
+- Si los datos tienen menos de 6 horas, se usan directamente sin llamar a la API.
+- Si expiraron o no existen, se hace un fetch completo y se vuelve a guardar.
 
-Flip cards y detalles del clima
-Cada ciudad se renderiza como una flip card:
+---
 
-Cara frontal: ciudad, temperatura principal, estado e icono, fecha.
+## Datos normalizados por ciudad
 
-Cara trasera: detalles adicionales (viento, humedad, probabilidad de lluvia) y un botón “Ver pronóstico semanal”.
+Cada ciudad queda representada como un objeto con esta forma:
 
-Al pulsar el botón:
+```javascript
+{
+  city:    "Santiago",
+  temp:    22,               // temperatura actual en °C
+  code:    1,                // código WMO del estado del cielo
+  maxTemp: 27,               // máxima del día actual
+  minTemp: 14,               // mínima del día actual
+  forecast: [                // array de 8 días (índice 0 = hoy)
+    { date: "2026-03-05", code: 1, maxTemp: 27, minTemp: 14 },
+    { date: "2026-03-06", code: 2, maxTemp: 25, minTemp: 13 },
+    // ...7 días más
+  ]
+}
+```
 
-Se abre un pop-up/modal que muestra una tabla con el pronóstico de la semana (día, T° mínima, T° máxima y estado).
+---
 
-Se ejecutan funciones que calculan:
+## Códigos WMO
 
-promedio de temperaturas.
+El objeto `WEATHER_CODES` mapea cada código numérico de la API a una etiqueta en español y un emoji. Cubre desde cielo despejado (0) hasta tormentas con granizo intenso (99).
 
-estado del tiempo más frecuente durante la semana.
+Los helpers visuales traducen el código en clases CSS y clases de ícono de Bootstrap Icons:
 
-Cambios relevantes (02/02/2026)
-Implementación de la estructura Sass 7-1 con parciales para layout y componentes.
+- `getCardClass(code)` → clase de color de fondo de la tarjeta (`weather-card--sunny`, `--rain`, `--stormy`, etc.)
+- `getIconClass(code)` → clase de ícono Bootstrap (`bi-sun-fill`, `bi-cloud-rain-fill`, etc.)
+- `getWeather(code)`   → `{ label, emoji }` para mostrar en texto
 
-Integración de metodología BEM en clases de tarjetas, iconos y modal.
+---
 
-Inclusión de datos de clima organizados por país y ciudad en estructuras JavaScript.
+## Tema visual por hora del día
 
-Renderizado dinámico de tarjetas de clima mediante funciones que recorren los arreglos.
+`getThemeByTime()` devuelve una clase CSS que se aplica tanto al `<body>` como a cada tarjeta, cambiando la paleta de colores según el momento del día:
 
-Implementación de:
+| Horario | Clase |
+|---------|-------|
+| 06:00 – 17:59 | `theme-day` |
+| 18:00 – 20:59 | `theme-afternoon` |
+| 21:00 – 05:59 | `theme-night` |
 
-tarjetas flip para mostrar más detalles de cada ciudad,
+---
 
-modal/popover para el pronóstico semanal,
+## Tarjetas principales — `renderCards()`
 
-funciones auxiliares para cálculo de promedios de temperatura y detección del estado climático más repetido.
+Por cada ciudad se genera una card Bootstrap con:
+
+- Nombre de la ciudad y fecha actual
+- Ícono del estado del cielo
+- Temperatura actual
+- Descripción del tiempo
+- Mínima y máxima del día
+- Botón **"Detalles >"** que abre el popover de pronóstico
+
+---
+
+## Popover de pronóstico — 7 días
+
+Al hacer clic en "Detalles >", Bootstrap muestra un popover con las tarjetas de los 7 días siguientes (excluyendo el día actual, que ya está en la card principal).
+
+El proceso involucra tres métodos:
+
+**`buildForecastHTML(forecast)`** — construye el HTML interno del popover mapeando `forecast.slice(1, 8)`. Cada día muestra: fecha abreviada, ícono, descripción, máxima y mínima.
+
+**`escapeAttr(html)`** — sanitiza el HTML antes de inyectarlo en el atributo `data-bs-content=""`. Escapa `&`, `"`, `'` y colapsa espacios y saltos de línea para que el atributo sea válido.
+
+**`initPopovers()`** — inicializa todos los popovers con `new bootstrap.Popover()` e instala un listener global para cerrarlos al hacer clic fuera de ellos.
+
+```
+Click "Detalles >"
+  └─ Bootstrap lee data-bs-content (HTML escapado)
+  └─ Desescapa y renderiza el HTML dentro del popover
+  └─ Muestra 7 tarjetas horizontales con scroll
+  └─ Click fuera → initPopovers() listener → pop.hide()
+```
+
+---
+
+## API — Open-Meteo
+
+Se consultan las 16 ciudades en una sola petición pasando coordenadas separadas por coma:
+
+```
+GET https://api.open-meteo.com/v1/forecast
+  ?latitude=...16 valores...
+  &longitude=...16 valores...
+  &current=temperature_2m,weather_code
+  &daily=time,weather_code,temperature_2m_max,temperature_2m_min
+  &timezone=America/Santiago
+```
+
+La API devuelve un array de objetos, uno por ciudad, en el mismo orden que las coordenadas. `normalizeLocations()` usa ese índice para asignar el nombre correcto desde `WeatherApp.CITIES`.
+
+---
+
+## Ciudades cubiertas
+
+Arica · Iquique · Antofagasta · Copiapó · La Serena · Valparaíso · Santiago · Rancagua · Talca · Chillán · Concepción · Temuco · Valdivia · Puerto Montt · Coyhaique · Punta Arenas
+
+---
+
+## Dependencias externas
+
+- [Open-Meteo API](https://open-meteo.com/) — datos meteorológicos, sin API key
+- [Bootstrap 5](https://getbootstrap.com/) — grid, componente Popover
+- [Bootstrap Icons](https://icons.getbootstrap.com/) — íconos del tiempo
