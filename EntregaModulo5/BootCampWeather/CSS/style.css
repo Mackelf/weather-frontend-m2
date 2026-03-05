@@ -1,0 +1,314 @@
+@charset "UTF-8";
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: #28a1ed;
+  background: linear-gradient(90deg, rgb(40, 161, 237) 0%, rgb(113, 151, 222) 83%);
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #fff;
+  text-align: center;
+  margin-top: 5vh;
+  font-family: poppins, sans-serif;
+}
+
+hr {
+  border: 1px solid white;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  color: #000000;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+}
+
+/* Contenedor horizontal del pronóstico */
+.forecast-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 2px;
+}
+
+/* Card compacta de cada día */
+.forecast-day-card {
+  flex: 0 0 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 4px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.25);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.forecast-label {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Permitir que los textos largos corten en 2 líneas */
+.forecast-label,
+.forecast-desc {
+  white-space: normal; /* antes usabas nowrap */
+  line-height: 1.1;
+}
+
+.forecast-icon {
+  font-size: 1.1rem;
+}
+
+.forecast-desc {
+  opacity: 0.9;
+}
+
+/* Max y min en la parte derecha de la fila */
+.forecast-max,
+.forecast-min {
+  font-weight: 600;
+}
+
+.forecast-max {
+  color: #ff6b6b;
+}
+
+.forecast-min {
+  color: #74b9ff;
+}
+
+/* Ampliar ancho máximo del popover para que quepan varios días */
+.popover {
+  max-width: 520px !important;
+}
+
+/* Dot reutilizable dentro del popover */
+.weather-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+}
+
+/* Dot dentro del popover: un poco más grande y con borde */
+.popover .weather-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  margin-right: 0.35rem;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.18);
+}
+
+/* ✅ Después — funciona en cualquier contexto */
+.weather-dot.weather-card--sunny {
+  background: #facc15;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.5019607843);
+}
+
+.weather-dot.weather-card--p-cloudy,
+.weather-dot.weather-card--cloudy {
+  background: #e5e7eb;
+  box-shadow: 0 0 8px rgba(229, 231, 235, 0.5019607843);
+}
+
+.weather-dot.weather-card--rain {
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5019607843);
+}
+
+.weather-dot.weather-card--snowy {
+  background: #e0f2fe;
+  box-shadow: 0 0 8px rgba(224, 242, 254, 0.5019607843);
+}
+
+.weather-dot.weather-card--fog {
+  background: #a5b4fc;
+  box-shadow: 0 0 8px rgba(165, 180, 252, 0.5019607843);
+}
+
+.weather-dot.weather-card--stormy {
+  background: #a855f7;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.5019607843);
+}
+
+/* ── Stats ── */
+.forecast-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.83rem;
+  color: #555;
+  margin-bottom: 10px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Tipo de semana — separador visual */
+.week-type {
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.week--clear {
+  background: rgba(255, 200, 0, 0.18);
+  color: #8a6200;
+}
+
+.week--cloudy {
+  background: rgba(120, 140, 160, 0.18);
+  color: #445566;
+}
+
+.week--rainy {
+  background: rgba(30, 100, 200, 0.13);
+  color: #1a4f99;
+}
+
+.week--varied {
+  background: rgba(100, 100, 100, 0.1);
+  color: #555;
+}
+
+/* Alerta de frío (nuevo) */
+.forecast-alert--cold {
+  background: rgba(100, 180, 255, 0.15);
+  color: #0a4a8a;
+  border-left: 3px solid #3a9ff0;
+}
+
+.weather-dot {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  box-shadow: 0 0 10px #ffcc00;
+}
+
+/* Acentos por tipo de clima */
+.weather-card--sunny .weather-dot {
+  background: #facc15;
+}
+
+.weather-card--p-cloudy .weather-dot,
+.weather-card--cloudy .weather-dot {
+  background: #e5e7eb;
+}
+
+.weather-card--rain .weather-dot {
+  background: #38bdf8;
+}
+
+.weather-card--snowy .weather-dot {
+  background: #e0f2fe;
+}
+
+.weather-card--fog .weather-dot {
+  background: #a5b4fc;
+}
+
+.weather-card--stormy .weather-dot {
+  background: #a855f7;
+}
+
+.weather-card {
+  width: 100%;
+  max-width: 320px;
+  min-height: 200px;
+  border-radius: 25px;
+  padding: 1.5rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
+  color: #fff;
+  transition: all 0.8s ease-in-out;
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.weather-card:hover {
+  transform: translateY(-2px);
+}
+
+.weather-main {
+  padding: 0.5rem 0 0.5rem;
+  text-align: center;
+}
+
+.weather-main__icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+}
+
+.temp-now {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.temp-now span {
+  font-size: 1.2rem;
+}
+
+.weather-desc {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+}
+
+/* Variaciones del BODY (Fondo de pantalla) */
+body.theme-day {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%) !important;
+}
+
+body.theme-afternoon {
+  background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%) !important;
+}
+
+body.theme-night {
+  background: linear-gradient(90deg, #0f172a 0%, #334155 100%) !important;
+}
+
+/* Variaciones de la CARD */
+.weather-card.theme-day {
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+}
+.weather-card.theme-afternoon {
+  background: linear-gradient(180deg, #f59e0b 0%, #9a3412 100%);
+}
+.weather-card.theme-night {
+  background: linear-gradient(180deg, #1e293b 0%, #020617 100%);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+/* Ajustes extras (opcional) */
+.theme-afternoon .btn-detalles {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/*# sourceMappingURL=style.css.map */

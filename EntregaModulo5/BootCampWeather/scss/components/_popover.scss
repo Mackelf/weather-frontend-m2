@@ -1,28 +1,130 @@
+// COMPONENTS POPOVER
+
+
+/* Contenedor horizontal del pronóstico */
 .forecast-row {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
+  padding: 4px 2px;
 }
 
+/* Card compacta de cada día */
 .forecast-day-card {
+  flex: 0 0 72px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  min-width: 64px;
-  padding: 6px;
+  gap: 2px;
+  padding: 4px 4px;
   border-radius: 8px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(15, 23, 42, 0.25);
   font-size: 0.75rem;
   text-align: center;
 }
 
-.forecast-label  { font-weight: 600; }
-.forecast-icon   { font-size: 1.2rem; }
-.forecast-max    { color: #ff6b6b; }
-.forecast-min    { color: #74b9ff; }
+.forecast-label {
+  font-weight: 600;
+  text-transform: uppercase;
+}
 
-/* Ampliar el ancho del popover para que quepan 7 días */
+/* Permitir que los textos largos corten en 2 líneas */
+.forecast-label,
+.forecast-desc {
+  white-space: normal;       /* antes usabas nowrap */
+  line-height: 1.1;
+}
+
+.forecast-icon {
+  font-size: 1.1rem;
+}
+
+.forecast-desc {
+  opacity: 0.9;
+}
+
+/* Max y min en la parte derecha de la fila */
+.forecast-max,
+.forecast-min {
+  font-weight: 600;
+}
+
+.forecast-max {
+  color: #ff6b6b;
+}
+
+.forecast-min {
+  color: #74b9ff;
+}
+
+/* Ampliar ancho máximo del popover para que quepan varios días */
 .popover {
   max-width: 520px !important;
+}
+
+/* Dot reutilizable dentro del popover */
+.weather-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+}
+
+/* Dot dentro del popover: un poco más grande y con borde */
+.popover .weather-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  margin-right: 0.35rem;
+  border: 2px solid rgba(0, 0, 0, 0.25);   // contorno para que se vea
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.18); // leve sombra
+}
+
+
+/* ✅ Después — funciona en cualquier contexto */
+.weather-dot.weather-card--sunny  { background: #facc15; box-shadow: 0 0 8px #facc1580; }
+.weather-dot.weather-card--p-cloudy,
+.weather-dot.weather-card--cloudy { background: #e5e7eb; box-shadow: 0 0 8px #e5e7eb80; }
+.weather-dot.weather-card--rain   { background: #38bdf8; box-shadow: 0 0 8px #38bdf880; }
+.weather-dot.weather-card--snowy  { background: #e0f2fe; box-shadow: 0 0 8px #e0f2fe80; }
+.weather-dot.weather-card--fog    { background: #a5b4fc; box-shadow: 0 0 8px #a5b4fc80; }
+.weather-dot.weather-card--stormy { background: #a855f7; box-shadow: 0 0 8px #a855f780; }
+
+/* ── Stats ── */
+.forecast-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.83rem;
+  color: #555;
+  margin-bottom: 10px;
+  padding: 6px 8px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 8px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Tipo de semana — separador visual */
+.week-type {
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.week--clear  { background: rgba(255,200,0,0.18);  color: #8a6200; }
+.week--cloudy { background: rgba(120,140,160,0.18); color: #445566; }
+.week--rainy  { background: rgba(30,100,200,0.13);  color: #1a4f99; }
+.week--varied { background: rgba(100,100,100,0.10); color: #555;    }
+
+/* Alerta de frío (nuevo) */
+.forecast-alert--cold {
+  background: rgba(100, 180, 255, 0.15);
+  color: #0a4a8a;
+  border-left: 3px solid #3a9ff0;
 }

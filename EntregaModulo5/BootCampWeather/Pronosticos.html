@@ -13,10 +13,21 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     
 
-    <link rel="stylesheet" href="./CSS/styles.css" />
+    <link rel="stylesheet" href="./CSS/style.css" />
   </head>
 
   <body>
+    <!--Carga de Theme-->
+    <script>
+  // Aplicación inmediata del tema para evitar el flash blanco
+  (function() {
+    const hour = new Date().getHours();
+    let theme = 'theme-night';
+    if (hour >= 6 && hour < 18) theme = 'theme-day';
+    else if (hour >= 18 && hour < 21) theme = 'theme-afternoon';
+    document.body.className = theme;
+  })();
+</script>
     <!--Cabecera-->
     <header>
     <h1><i class="bi bi-cloud-sun"></i>BootCamp Weather</h1>
@@ -57,10 +68,11 @@
                   Escoge tu País
                 </a>
                 <ul class="dropdown-menu" id="countryDropdown">
-                  <li><a class="dropdown-item" href="#" data-country="chile">Chile</a></li>
-                  <li><a class="dropdown-item" href="#" data-country="argentina">Argentina</a></li>
-                  <li><a class="dropdown-item" href="#" data-country="peru">Perú</a></li>
-                  <li><a class="dropdown-item" href="#" data-country="colombia">Colombia</a></li>
+                  <li><a class="dropdown-item active" href="#" data-country="chile">Chile 🇨🇱</a></li>
+                  <li><a class="dropdown-item" href="#" data-country="argentina">Argentina 🇦🇷</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item disabled" href="#" data-country="peru">Perú 🇵🇪 <small class="text-muted">(próximamente)</small></a></li>
+                  <li><a class="dropdown-item disabled" href="#" data-country="colombia">Colombia 🇨🇴 <small class="text-muted">(próximamente)</small></a></li>
                 </ul>
               </li>
             </ul>

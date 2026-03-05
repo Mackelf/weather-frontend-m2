@@ -43,14 +43,7 @@ class WeatherApiClient {
 
 // ─── Weather App ───────────────────────────────────────────────────────────
 class WeatherApp {
-  static CACHE_KEY    = "weatherCache";
   static CACHE_TTL_MS = 6 * 60 * 60 * 1000;
-
-  static CITIES = [
-    "Arica", "Iquique", "Antofagasta", "Copiapo", "La Serena",
-    "Valparaiso", "Santiago", "Rancagua", "Talca", "Chillán",
-    "Concepción", "Temuco", "Valdivia", "Puerto Montt", "Coyhaique", "Punta Arenas",
-  ];
 
   constructor(apiClient, gridElementId) {
     this.apiClient = apiClient;
@@ -62,12 +55,13 @@ class WeatherApp {
 
   saveWeatherData(data) {
     const payload = { timestamp: Date.now(), data };
-    localStorage.setItem(WeatherApp.CACHE_KEY, JSON.stringify(payload));
+    localStorage.setItem(this.cacheKey ?? "weatherCache", JSON.stringify(payload));
     console.log("[Cache] Datos guardados:", new Date().toLocaleTimeString());
   }
 
   loadWeatherData() {
-    const raw = localStorage.getItem(WeatherApp.CACHE_KEY);
+    const key = this.cacheKey ?? "weatherCache";
+    const raw = localStorage.getItem(key);
     if (!raw) {
       console.log("[Cache] Sin datos en caché.");
       return null;
@@ -78,7 +72,7 @@ class WeatherApp {
 
     if (age > WeatherApp.CACHE_TTL_MS) {
       console.log(`[Cache] Caché expirado (${hoursOld}h). Refrescando...`);
-      localStorage.removeItem(WeatherApp.CACHE_KEY);
+      localStorage.removeItem(key);
       return null;
     }
     console.log(`[Cache] Usando caché (${hoursOld}h de antigüedad).`);
@@ -89,7 +83,7 @@ class WeatherApp {
 
   normalizeLocations(rawLocations) {
     return rawLocations.map((loc, i) => ({
-      city:    WeatherApp.CITIES[i] ?? `Ubicación ${i + 1}`,
+      city:    (this.cities ?? [])[i] ?? `Ubicación ${i + 1}`,
       temp:    loc.current.temperature_2m,
       code:    loc.current.weather_code,
       maxTemp: loc.daily.temperature_2m_max[0],
@@ -139,28 +133,126 @@ class WeatherApp {
     return "theme-night";
   }
 
+  // ── Estadisticas ───────────────────────────────────────────────────────
+  getForecastStats(forecast) {
+  const next7 = forecast.slice(1, 8);
+
+  // ── Temperatura promedio ──────────────────────────────────────────────
+  const avgTemp = next7.reduce((sum, d) => sum + (d.maxTemp + d.minTemp) / 2, 0) / next7.length;
+
+  // ── Alertas ───────────────────────────────────────────────────────────
+  const alerts = [];
+
+  // 🌡️ Calor: algún día supera 25°C en máxima
+  const hotDays = next7.filter(d => d.maxTemp >= 25);
+  if (hotDays.length > 0) {
+    const peakTemp = Math.max(...hotDays.map(d => d.maxTemp));
+    alerts.push({
+      type: "heat",
+      icon: "bi bi-thermometer-sun",
+      text: `Alerta de calor — hasta ${peakTemp}°C`,
+    });
+  }
+
+  // 🧊 Frío: algún día baja de 5°C en mínima
+  const coldDays = next7.filter(d => d.minTemp <= 5);
+  if (coldDays.length > 0) {
+    const peakCold = Math.min(...coldDays.map(d => d.minTemp));
+    alerts.push({
+      type: "cold",
+      icon: "bi bi-snow2",
+      text: `Alerta de frío — hasta ${peakCold}°C`,
+    });
+  }
+
+  // 🌧️ Semana lluviosa: 3 o más días con lluvia/tormenta
+  const RAIN_CODES = [51,53,55,61,63,65,80,81,82,95,96,99];
+  const rainyDays  = next7.filter(d => RAIN_CODES.includes(d.code));
+  if (rainyDays.length >= 3) {
+    alerts.push({
+      type: "rain",
+      icon: "bi bi-cloud-rain-heavy-fill",
+      text: `Semana lluviosa — ${rainyDays.length} días con lluvia`,
+    });
+  }
+
+  // ── Tipo de semana ────────────────────────────────────────────────────
+  const CLOUDY_CODES = [2, 3, 45, 48];
+  const CLEAR_CODES  = [0, 1];
+
+  const clearDays  = next7.filter(d => CLEAR_CODES.includes(d.code)).length;
+  const cloudyDays = next7.filter(d => CLOUDY_CODES.includes(d.code)).length;
+  const rainyCount = rainyDays.length;
+
+  // La categoría con más días gana
+  let weekType;
+  const max = Math.max(clearDays, cloudyDays, rainyCount);
+
+  if (max === 0) {
+    weekType = { icon: "bi bi-question-circle", label: "Semana variada",      css: "week--varied"  };
+  } else if (clearDays === max) {
+    weekType = { icon: "bi bi-sun-fill",        label: "Semana despejada",    css: "week--clear"   };
+  } else if (cloudyDays === max) {
+    weekType = { icon: "bi bi-cloud-fill",      label: "Semana nublada",      css: "week--cloudy"  };
+  } else {
+    weekType = { icon: "bi bi-cloud-rain-fill", label: "Semana lluviosa",     css: "week--rainy"   };
+  }
+
+  return { avgTemp: avgTemp.toFixed(1), alerts, weekType };
+}
+
   // ── Render ───────────────────────────────────────────────────────────────
 
-  buildForecastHTML(forecast) {
-    // slice(1) = saltar el día actual, tomar los 7 siguientes
-    return `
-      <div class="forecast-row">
-        ${forecast.slice(1, 8).map(({ date, code, maxTemp, minTemp }) => {
-          const wx        = this.getWeather(code);
-          const iconClass = this.getIconClass(code);
-          const label     = new Date(date + "T12:00:00")
-                              .toLocaleDateString("es-CL", { weekday: "short", day: "2-digit" });
-          return `
-            <div class="forecast-day-card">
-              <span class="forecast-label">${label}</span>
-              <i class="${iconClass} forecast-icon"></i>
-              <span class="forecast-desc">${wx.label}</span>
-              <span class="forecast-max">↑ ${maxTemp}°</span>
-              <span class="forecast-min">↓ ${minTemp}°</span>
-            </div>`;
-        }).join("")}
-      </div>`;
-  }
+
+buildForecastHTML(forecast) {
+  const { avgTemp, alerts, weekType } = this.getForecastStats(forecast);
+
+  // ── Alertas ──
+  const alertsHTML = alerts.length > 0
+    ? `<div class="forecast-alerts">
+        ${alerts.map(a => `
+          <div class="forecast-alert forecast-alert--${a.type}">
+            <i class="${a.icon}"></i> ${a.text}
+          </div>`).join("")}
+       </div>`
+    : "";
+
+  // ── Stats: promedio + tipo de semana ──
+  const statsHTML = `
+    <div class="forecast-stats">
+      <div class="stat-item">
+        <i class="bi bi-thermometer-half"></i>
+        <span>Promedio semanal: <strong>${avgTemp}°C</strong></span>
+      </div>
+      <div class="stat-item week-type ${weekType.css}">
+        <i class="${weekType.icon}"></i>
+        <span>${weekType.label}</span>
+      </div>
+    </div>`;
+
+  // ── Días (sin cambios) ──
+  const daysHTML = `
+    <div class="forecast-row">
+      ${forecast.slice(1, 8).map(({ date, code, maxTemp, minTemp }) => {
+        const wx        = this.getWeather(code);
+        const iconClass = this.getIconClass(code);
+        const dotClass  = this.getCardClass(code);
+        const label     = new Date(date + "T12:00:00")
+                            .toLocaleDateString("es-CL", { weekday: "short", day: "2-digit" });
+        return `
+          <div class="forecast-day-card">
+            <span class="forecast-label">${label}</span>
+            <i class="${iconClass} forecast-icon"></i>
+            <span class="weather-dot ${dotClass}"></span>
+            <span class="forecast-desc">${wx.label}</span>
+            <span class="forecast-max">↑ ${maxTemp}°</span>
+            <span class="forecast-min">↓ ${minTemp}°</span>
+          </div>`;
+      }).join("")}
+    </div>`;
+
+  return alertsHTML + statsHTML + daysHTML;
+}
 
   renderCards() {
     this.grid.innerHTML = "";
@@ -274,15 +366,146 @@ class WeatherApp {
   }
 }
 
-// ─── Bootstrap ────────────────────────────────────────────────────────────
-const API_URL =
-  "https://api.open-meteo.com/v1/forecast" +
-  "?latitude=-18.4746,-20.2133,-23.6509,-27.3668,-29.9027,-33.0472,-33.4489,-34.1708,-35.4264,-36.0667,-36.8270,-38.7359,-39.8142,-41.4693,-45.5752,-53.1638" +
-  "&longitude=-70.2979,-70.1503,-70.3975,-70.3322,-71.2519,-71.6127,-70.6693,-70.7444,-71.6554,-71.9167,-73.0498,-72.5904,-73.2459,-72.9411,-72.0662,-70.9171" +
-  "&current=temperature_2m,weather_code" +
-  "&daily=time,weather_code,temperature_2m_max,temperature_2m_min" + // ✅ time agregado
-  "&timezone=America/Santiago";
+// ─── Configuración por país ───────────────────────────────────────────────
+const COUNTRIES = {
+  chile: {
+    label:     "Chile 🇨🇱",
+    cacheKey:  "weatherCache_chile",
+    timezone:  "America/Santiago",
+    cities: [
+      "Arica", "Iquique", "Antofagasta", "Copiapo", "La Serena",
+      "Valparaiso", "Santiago", "Rancagua", "Talca", "Chillán",
+      "Concepción", "Temuco", "Valdivia", "Puerto Montt", "Coyhaique", "Punta Arenas",
+    ],
+    apiUrl:
+      "https://api.open-meteo.com/v1/forecast" +
+      "?latitude=-18.4746,-20.2133,-23.6509,-27.3668,-29.9027,-33.0472,-33.4489,-34.1708,-35.4264,-36.0667,-36.8270,-38.7359,-39.8142,-41.4693,-45.5752,-53.1638" +
+      "&longitude=-70.2979,-70.1503,-70.3975,-70.3322,-71.2519,-71.6127,-70.6693,-70.7444,-71.6554,-71.9167,-73.0498,-72.5904,-73.2459,-72.9411,-72.0662,-70.9171" +
+      "&current=temperature_2m,weather_code" +
+      "&daily=weather_code,temperature_2m_max,temperature_2m_min" +
+      "&timezone=America/Santiago",
+  },
 
-const apiClient = new WeatherApiClient(API_URL);
-const app       = new WeatherApp(apiClient, "grid");
+  argentina: {
+    label:    "Argentina 🇦🇷",
+    cacheKey: "weatherCache_argentina",
+    timezone: "America/Argentina/Buenos_Aires",
+    cities: [
+      "Buenos Aires", "Córdoba", "Rosario", "Posadas", "San Salvador de Jujuy",
+      "Catamarca", "Formosa", "Resistencia", "Paraná", "San Juan",
+      "San Luis", "Santa Rosa", "Neuquén", "Rawson", "Viedma",
+      "Río Gallegos", "Ushuaia", "Bahía Blanca", "Sgo. del Estero", "Tucumán",
+      "Salta", "La Plata", "Mendoza", "La Rioja",
+    ],
+    apiUrl:
+      "https://api.open-meteo.com/v1/forecast" +
+      "?latitude=-34.6132,-31.4135,-32.9468,-27.3671,-24.1858,-28.4696,-26.1849,-27.4606,-31.7333,-31.5375,-33.3017,-32.4847,-36.6167,-38.9516,-43.3002,-40.8135,-45.8641,-54.8019,-38.7196,-27.8006,-26.8241,-24.7859,-34.9215,-33.2950" +
+      "&longitude=-58.3772,-64.1811,-60.6393,-55.8961,-65.2995,-65.7852,-58.1731,-58.9839,-60.5298,-68.5364,-66.3378,-58.2321,-64.2833,-68.0591,-65.1023,-62.9967,-67.4808,-68.3030,-62.2724,-64.2615,-65.2226,-65.4117,-57.9545,-66.3356" +
+      "&current=temperature_2m,weather_code" +
+      "&daily=weather_code,temperature_2m_max,temperature_2m_min" +
+      "&timezone=America/Argentina/Buenos_Aires",
+  },
+};
+
+// ─── Bootstrap ───────────────────────────────────────────────────────────
+let currentCountry = "chile";
+
+function buildApp(countryKey) {
+  const country   = COUNTRIES[countryKey];
+  const apiClient = new WeatherApiClient(country.apiUrl);
+
+  // Inyecta ciudades y cacheKey dinámicamente en la instancia
+  const app = new WeatherApp(apiClient, "grid");
+  app.cities   = country.cities;
+  app.cacheKey = country.cacheKey;
+
+  // Sobrescribe normalizeLocations para usar las ciudades del país activo
+  app.normalizeLocations = function(rawLocations) {
+    return rawLocations.map((loc, i) => ({
+      city:     this.cities[i] ?? `Ciudad ${i + 1}`,
+      temp:     loc.current.temperature_2m,
+      code:     loc.current.weather_code,
+      maxTemp:  loc.daily.temperature_2m_max[0],
+      minTemp:  loc.daily.temperature_2m_min[0],
+      forecast: loc.daily.time.map((date, j) => ({
+        date,
+        code:    loc.daily.weather_code[j],
+        maxTemp: loc.daily.temperature_2m_max[j],
+        minTemp: loc.daily.temperature_2m_min[j],
+      })),
+    }));
+  };
+
+  // Sobrescribe save/load para usar la cacheKey del país
+  app.saveWeatherData = function(data) {
+    const payload = { timestamp: Date.now(), data };
+    localStorage.setItem(this.cacheKey, JSON.stringify(payload));
+    console.log(`[Cache][${countryKey}] Guardado:`, new Date().toLocaleTimeString());
+  };
+
+  app.loadWeatherData = function() {
+    const raw = localStorage.getItem(this.cacheKey);
+    if (!raw) return null;
+    const { timestamp, data } = JSON.parse(raw);
+    const age = Date.now() - timestamp;
+    if (age > WeatherApp.CACHE_TTL_MS) {
+      localStorage.removeItem(this.cacheKey);
+      console.log(`[Cache][${countryKey}] Expirado. Refrescando...`);
+      return null;
+    }
+    console.log(`[Cache][${countryKey}] Usando caché (${(age/3600000).toFixed(1)}h).`);
+    return data;
+  };
+
+  return app;
+}
+
+// ── Fade helper ───────────────────────────────────────────────────────────
+function switchCountry(countryKey) {
+  if (countryKey === currentCountry) return;
+  if (!COUNTRIES[countryKey]) {
+    console.warn(`[País] "${countryKey}" aún no está disponible.`);
+    return;
+  }
+
+  currentCountry = countryKey;
+
+  // Actualiza etiqueta del dropdown
+  const toggle = document.querySelector('[data-bs-toggle="dropdown"]');
+  if (toggle) toggle.textContent = `📍 ${COUNTRIES[countryKey].label}`;
+
+  // Marca el item activo
+  document.querySelectorAll('#countryDropdown .dropdown-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.country === countryKey);
+  });
+
+  // Fade out → carga → fade in
+  const grid = document.getElementById('grid');
+  grid.style.transition = "opacity .3s ease";
+  grid.style.opacity    = "0";
+
+  setTimeout(() => {
+    const app = buildApp(countryKey);
+    app.init().then(() => {
+      grid.style.opacity = "1";
+    });
+  }, 300);
+}
+
+// ── Listeners del dropdown ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#countryDropdown .dropdown-item').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchCountry(el.dataset.country);
+    });
+  });
+
+  // Etiqueta inicial
+  const toggle = document.querySelector('[data-bs-toggle="dropdown"]');
+  if (toggle) toggle.textContent = `📍 ${COUNTRIES[currentCountry].label}`;
+});
+
+// ── Carga inicial ─────────────────────────────────────────────────────────
+const app = buildApp("chile");
 app.init();

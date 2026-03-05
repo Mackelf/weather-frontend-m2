@@ -7,19 +7,18 @@
 @import 'base/base';
 
 // 3. LAYOUT
-@import 'layout/header';
+
 @import 'layout/footer';
 
-// 3.5 Themes
-@import 'themes/TimeTheme';
 
 // 4. COMPONENTES (tu CSS principal)
 //@import 'components/flip-card';
-@import 'components/weather-icons';
+
 @import 'components/popover';
 @import 'components/card';
-@import 'components/_flip-cards';
+
 @import 'components/_button';
 // 5. UTILIDADES
 
-
+// 6. Themes
+@import 'themes/TimeTheme';

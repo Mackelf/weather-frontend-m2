@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BootCamp Weather — Home</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Variables base (consistente con card.scss) ───────── */
+    :root {
+      --card-radius:   25px;
+      --card-shadow:   0 18px 40px rgba(15,23,42,0.45);
+
+      /* tokens de superficie — se sobreescriben por tema */
+      --surface-header:  rgba(15,23,42,0.85);
+      --surface-section: rgba(15,23,42,0.35);
+      --surface-border:  rgba(255,255,255,0.10);
+      --text-main:       #f0f6ff;
+      --text-muted:      rgba(255,255,255,0.65);
+      --text-label:      rgba(255,255,255,0.55);
+      --pill-bg:         rgba(255,255,255,0.08);
+      --pill-border:     rgba(255,255,255,0.14);
+      --pill-color:      rgba(255,255,255,0.6);
+      --btn-outline-border: rgba(255,255,255,0.25);
+
+      /* card forecast y botón — se sobreescriben por tema */
+      --forecast-card-grad: linear-gradient(160deg, #3b82f6, #1d4ed8);
+      --btn-primary-grad:   linear-gradient(180deg, #3b82f6, #1d4ed8);
+      --hero-card-grad:     linear-gradient(180deg, #3b82f6, #1d4ed8);
+      --hero-card-shadow:   0 18px 40px rgba(15,23,42,0.45);
+      --accent-color:       #38bdf8;
+    }
+
+    /* ── Tema DÍA (06–18h) ─────────────────────────────────── */
+    body.theme-day {
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      --surface-header:     rgba(255,255,255,0.20);
+      --surface-section:    rgba(255,255,255,0.15);
+      --surface-border:     rgba(255,255,255,0.28);
+      --text-muted:         rgba(255,255,255,0.78);
+      --text-label:         rgba(255,255,255,0.60);
+      --pill-bg:            rgba(255,255,255,0.20);
+      --pill-border:        rgba(255,255,255,0.35);
+      --pill-color:         #fff;
+      --btn-outline-border: rgba(255,255,255,0.45);
+      --forecast-card-grad: linear-gradient(160deg, #3b82f6, #1d4ed8);
+      --btn-primary-grad:   linear-gradient(180deg, #3b82f6, #1d4ed8);
+      --hero-card-grad:     linear-gradient(180deg, #3b82f6, #1d4ed8);
+      --accent-color:       #1d4ed8;
+    }
+
+    /* ── Tema TARDE (18–21h) ───────────────────────────────── */
+    body.theme-afternoon {
+      background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+      --surface-header:     rgba(255,255,255,0.18);
+      --surface-section:    rgba(255,255,255,0.12);
+      --surface-border:     rgba(255,255,255,0.25);
+      --text-muted:         rgba(255,255,255,0.78);
+      --text-label:         rgba(255,255,255,0.58);
+      --pill-bg:            rgba(255,255,255,0.18);
+      --pill-border:        rgba(255,255,255,0.30);
+      --pill-color:         #fff;
+      --btn-outline-border: rgba(255,255,255,0.40);
+      --forecast-card-grad: linear-gradient(160deg, #f59e0b, #9a3412);
+      --btn-primary-grad:   linear-gradient(180deg, #f59e0b, #9a3412);
+      --hero-card-grad:     linear-gradient(180deg, #f59e0b, #9a3412);
+      --hero-card-shadow:   0 18px 40px rgba(154,52,18,0.45);
+      --accent-color:       #fcd34d;
+    }
+
+    /* ── Tema NOCHE (21–06h) ───────────────────────────────── */
+    body.theme-night {
+      background: linear-gradient(90deg, #0f172a 0%, #334155 100%);
+      --surface-header:     rgba(15,23,42,0.85);
+      --surface-section:    rgba(15,23,42,0.50);
+      --surface-border:     rgba(255,255,255,0.08);
+      --text-muted:         #94a3b8;
+      --text-label:         #64748b;
+      --pill-bg:            rgba(255,255,255,0.06);
+      --pill-border:        rgba(255,255,255,0.10);
+      --pill-color:         #94a3b8;
+      --btn-outline-border: rgba(255,255,255,0.18);
+      --forecast-card-grad: linear-gradient(160deg, #1e293b, #020617);
+      --btn-primary-grad:   linear-gradient(180deg, #3b82f6, #1d4ed8);
+      --hero-card-grad:     linear-gradient(180deg, #1e293b, #020617);
+      --hero-card-shadow:   0 15px 35px rgba(0,0,0,0.6);
+      --accent-color:       #38bdf8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-main);
+      overflow-x: hidden;
+      transition: background .8s ease;
+    }
+
+    /* ── Navbar ────────────────────────────────────────────── */
+    .site-header {
+      position: sticky; top: 0; z-index: 200;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface-header);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--surface-border);
+      transition: background .8s ease, border-color .8s ease;
+    }
+    .site-logo {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      text-decoration: none; display: flex; align-items: center; gap: .5rem;
+    }
+    .site-logo i { color: var(--accent-color); font-size: 1.4rem; transition: color .8s ease; }
+    .site-nav { display: flex; gap: 2rem; list-style: none; }
+    .site-nav a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: .85rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .site-nav a:hover, .site-nav a.active { color: #fff; }
+    .site-nav a.disabled { opacity: .35; pointer-events: none; }
+
+    /* ── Hero ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 90vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 3rem;
+      padding: 5rem 2rem 4rem; max-width: 1200px; margin: 0 auto;
+    }
+    .hero__eyebrow {
+      font-family: 'DM Mono', monospace; font-size: .75rem;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--accent-color);
+      margin-bottom: 1.2rem; opacity: 0; animation: fadeUp .6s .1s forwards;
+      transition: color .8s ease;
+    }
+    .hero__title {
+      font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 800;
+      line-height: 1.05; letter-spacing: -.03em; margin-bottom: 1.2rem;
+      opacity: 0; animation: fadeUp .7s .25s forwards;
+    }
+    .hero__title .accent { color: var(--accent-color); transition: color .8s ease; }
+    .hero__sub {
+      font-size: 1rem; color: var(--text-muted); line-height: 1.75;
+      font-weight: 300; margin-bottom: 2rem;
+      opacity: 0; animation: fadeUp .7s .4s forwards;
+      transition: color .8s ease;
+    }
+    .hero__actions {
+      display: flex; gap: .75rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp .7s .55s forwards;
+    }
+    .btn-card {
+      background: var(--btn-primary-grad);
+      color: #fff; border: none; padding: .8rem 1.8rem; border-radius: 50px;
+      font-family: 'Outfit', sans-serif; font-weight: 700; font-size: .9rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .45rem;
+      box-shadow: var(--card-shadow); transition: transform .2s, box-shadow .2s;
+    }
+    .btn-card:hover { transform: translateY(-2px); box-shadow: 0 24px 48px rgba(15,23,42,.5); color: #fff; }
+    .btn-outline {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid var(--btn-outline-border); padding: .8rem 1.8rem; border-radius: 50px;
+      font-family: 'Outfit', sans-serif; font-weight: 600; font-size: .9rem;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .45rem;
+      backdrop-filter: blur(6px);
+      transition: background .2s, border-color .2s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.25); color: #fff; }
+
+    /* ── Hero live card ────────────────────────────────────── */
+    .hero__card-wrap {
+      display: flex; justify-content: center;
+      opacity: 0; animation: fadeUp .8s .3s forwards;
+    }
+
+    .weather-card {
+      width: 100%; max-width: 300px; min-height: 200px;
+      border-radius: var(--card-radius); padding: 1.5rem;
+      box-shadow: var(--hero-card-shadow); color: #fff;
+      transition: all 0.8s ease-in-out;
+      background: var(--hero-card-grad);
+      position: relative;
+    }
+    .weather-card:hover { transform: translateY(-2px); }
+
+    .weather-dot {
+      display: inline-block; width: 15px; height: 15px;
+      border-radius: 50%; margin-right: .4rem; box-shadow: 0 0 10px #ffcc00;
+    }
+    .weather-card--sunny   .weather-dot { background: #facc15; }
+    .weather-card--p-cloudy .weather-dot,
+    .weather-card--cloudy  .weather-dot { background: #e5e7eb; }
+    .weather-card--rain    .weather-dot { background: #38bdf8; }
+    .weather-card--snowy   .weather-dot { background: #e0f2fe; }
+    .weather-card--fog     .weather-dot { background: #a5b4fc; }
+    .weather-card--stormy  .weather-dot { background: #a855f7; }
+
+    .card-header-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; opacity: .85;
+    }
+    .weather-main { padding: .5rem 0; text-align: center; }
+    .weather-main__icon {
+      font-size: 3rem; margin-bottom: 10px;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));
+    }
+    .temp-now { font-size: 2.4rem; font-weight: 700; }
+    .temp-now span { font-size: 1.2rem; }
+    .weather-desc { font-size: .9rem; text-transform: uppercase; letter-spacing: .06em; opacity: .9; }
+    .temp-range { display: flex; justify-content: space-between; font-size: .85rem; margin-top: .75rem; opacity: .85; }
+
+    .skeleton {
+      background: linear-gradient(90deg,rgba(255,255,255,.08) 25%,rgba(255,255,255,.18) 50%,rgba(255,255,255,.08) 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .sk-line { height: 14px; margin: 6px auto; border-radius: 6px; }
+
+    .live-badge {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: rgba(255,255,255,.15); border-radius: 2rem; padding: .2rem .65rem;
+      font-size: .65rem; font-family: 'DM Mono', monospace; letter-spacing: .1em;
+      display: flex; align-items: center; gap: .35rem;
+    }
+    .live-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #4ade80;
+      animation: pulse-green 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-green { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── Divider ───────────────────────────────────────────── */
+    .section-divider { height:1px; background:var(--surface-border); max-width:1200px; margin:0 auto; transition: background .8s ease; }
+
+    /* ── Nav Cards ─────────────────────────────────────────── */
+    .section-cards { max-width:1200px; margin:0 auto; padding:5rem 2rem; }
+    .section-header { margin-bottom:2.5rem; }
+    .section-label {
+      font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--accent-color); margin-bottom:.5rem;
+      transition: color .8s ease;
+    }
+    .section-title { font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; letter-spacing:-.03em; }
+
+    .nav-cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+
+    .nav-card {
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      padding: 2rem; text-decoration: none; color: #fff;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: transform .25s, box-shadow .25s;
+      position: relative; overflow: hidden;
+    }
+    .nav-card:hover { transform: translateY(-2px); box-shadow: 0 28px 56px rgba(15,23,42,.65); color: #fff; }
+    .nav-card--forecast { background: var(--forecast-card-grad); transition: background .8s ease, transform .25s, box-shadow .25s; }
+    .nav-card--news     { background: linear-gradient(160deg, #6d28d9 0%, #3b0764 100%); }
+
+    .nav-card__dot {
+      display:inline-block; width:15px; height:15px; border-radius:50%;
+      box-shadow:0 0 10px #ffcc00; margin-right:.4rem;
+    }
+    .nav-card--forecast .nav-card__dot { background:#facc15; }
+    .nav-card--news     .nav-card__dot { background:#a855f7; box-shadow:0 0 10px #a855f7; }
+
+    .nav-card__top { display:flex; align-items:center; font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; opacity:.85; }
+    .nav-card__icon { font-size:2.4rem; filter:drop-shadow(0 0 8px rgba(255,255,255,.4)); }
+    .nav-card__title { font-size:1.5rem; font-weight:800; letter-spacing:-.02em; line-height:1.15; }
+    .nav-card__desc { font-size:.9rem; opacity:.85; line-height:1.65; font-weight:300; }
+
+    .nav-card__preview {
+      background:rgba(255,255,255,.1); border-radius:12px; padding:.9rem 1rem;
+      font-size:.85rem; line-height:1.6;
+    }
+    .nav-card__preview-label {
+      font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.15em;
+      text-transform:uppercase; opacity:.7; margin-bottom:.35rem;
+    }
+    .nav-card__preview-val { font-weight:700; font-size:1rem; }
+
+    .nav-card__cta {
+      margin-top:auto; font-size:.85rem; font-weight:700; letter-spacing:.04em;
+      text-transform:uppercase; opacity:.9; display:flex; align-items:center; gap:.4rem;
+      transition:gap .2s;
+    }
+    .nav-card:hover .nav-card__cta { gap:.75rem; }
+
+    /* ── About ─────────────────────────────────────────────── */
+    .section-about {
+      background: var(--surface-section);
+      border-top: 1px solid var(--surface-border);
+      border-bottom: 1px solid var(--surface-border);
+      backdrop-filter: blur(8px);
+      transition: background .8s ease, border-color .8s ease;
+    }
+    .section-about__inner {
+      max-width:1200px; margin:0 auto; padding:5rem 2rem;
+      display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
+    }
+    .about__title { font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; letter-spacing:-.03em; margin-bottom:1.25rem; }
+    .about__text { color:var(--text-muted); line-height:1.8; font-weight:300; margin-bottom:1rem; transition: color .8s ease; }
+    .about__pills { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem; }
+    .pill {
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      border-radius:2rem; padding:.35rem .9rem; font-size:.78rem;
+      font-family:'DM Mono',monospace; color:var(--pill-color);
+      transition: background .8s ease, border-color .8s ease, color .8s ease;
+    }
+    .about__stats { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .stat-card { border-radius:var(--card-radius); padding:1.75rem 1.5rem; box-shadow:var(--card-shadow); }
+    .stat-card:nth-child(1) { background:var(--forecast-card-grad); transition: background .8s ease; }
+    .stat-card:nth-child(2) { background:linear-gradient(160deg,#6d28d9,#3b0764); }
+    .stat-card:nth-child(3) { background:linear-gradient(160deg,#0f766e,#134e4a); }
+    .stat-card:nth-child(4) { background:linear-gradient(160deg,#b45309,#78350f); }
+    .stat-card__num { font-size:2.2rem; font-weight:800; letter-spacing:-.04em; margin-bottom:.25rem; }
+    .stat-card__label { font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; opacity:.8; }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    .site-footer {
+      text-align:center; padding:2rem 1.5rem; font-size:.8rem;
+      color:var(--text-muted); font-family:'DM Mono',monospace;
+      border-top:1px solid var(--surface-border);
+      transition: color .8s ease, border-color .8s ease;
+    }
+
+    /* ── Animations ────────────────────────────────────────── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+    .reveal-d1 { transition-delay:.1s; }
+    .reveal-d2 { transition-delay:.22s; }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .hero { grid-template-columns:1fr; min-height:auto; padding:3rem 1.25rem; text-align:center; }
+      .hero__actions { justify-content:center; }
+      .hero__card-wrap { order:-1; }
+      .nav-cards-grid { grid-template-columns:1fr; }
+      .section-about__inner { grid-template-columns:1fr; }
+      .about__stats { grid-template-columns:1fr 1fr; }
+      .site-nav { gap:1rem; }
+    }
+    @media (max-width:480px) { .site-nav { display:none; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="site-header">
+    <a href="./Home.html" class="site-logo">
+      <i class="bi bi-cloud-sun-fill"></i> BootCamp Weather
+    </a>
+    <ul class="site-nav">
+      <li><a href="./Home.html" class="active">Inicio</a></li>
+      <li><a href="./Pronosticos.html">Pronósticos</a></li>
+      <li><a href="./News.html">Noticias</a></li>
+      <li><a href="#" class="disabled">Quiénes somos</a></li>
+    </ul>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__text">
+      <p class="hero__eyebrow"><i class="bi bi-geo-alt-fill"></i> &nbsp;Chile — de Arica a Punta Arenas</p>
+      <h1 class="hero__title">El clima de Chile<br><span class="accent">en tiempo real</span></h1>
+      <p class="hero__sub">Pronósticos actualizados para 16 ciudades. Sin registro, sin publicidad. Datos directos desde Open-Meteo con caché de 6 horas.</p>
+      <div class="hero__actions">
+        <a href="./Pronosticos.html" class="btn-card"><i class="bi bi-cloud-sun"></i> Ver pronósticos</a>
+        <a href="./News.html" class="btn-outline"><i class="bi bi-newspaper"></i> Noticias</a>
+      </div>
+    </div>
+
+    <!-- Live card Santiago -->
+    <div class="hero__card-wrap">
+      <div class="weather-card" id="hero-card">
+        <div class="live-badge"><div class="live-dot"></div> En vivo</div>
+        <div class="card-header-row">
+          <span><span class="weather-dot"></span>Santiago</span>
+          <span id="hero-date" style="opacity:.7"></span>
+        </div>
+        <hr style="border-color:rgba(255,255,255,.2);margin:.6rem 0">
+        <div id="hero-loading">
+          <div class="sk-line skeleton" style="width:60%"></div>
+          <div class="sk-line skeleton" style="width:40%;margin-top:12px"></div>
+          <div class="sk-line skeleton" style="width:55%;margin-top:8px"></div>
+        </div>
+        <div id="hero-data" style="display:none">
+          <div class="weather-main">
+            <i id="hero-icon" class="weather-main__icon"></i>
+            <div class="temp-now"><span id="hero-temp"></span><span>°C</span></div>
+            <div class="weather-desc" id="hero-desc"></div>
+          </div>
+          <div class="temp-range">
+            <span id="hero-min"></span>
+            <span id="hero-max"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Nav Cards -->
+  <section class="section-cards">
+    <div class="section-header reveal">
+      <p class="section-label">Accesos directos</p>
+      <h2 class="section-title">¿Qué quieres ver hoy?</h2>
+    </div>
+    <div class="nav-cards-grid">
+
+      <!-- Pronósticos -->
+      <a href="./Pronosticos.html" class="nav-card nav-card--forecast reveal reveal-d1">
+        <div class="nav-card__top"><span class="nav-card__dot"></span> Datos en vivo</div>
+        <i class="bi bi-cloud-sun-fill nav-card__icon"></i>
+        <h3 class="nav-card__title">Pronósticos<br>del tiempo</h3>
+        <p class="nav-card__desc">Clima actual, máximas, mínimas y previsión de 7 días para 16 ciudades. Con alertas automáticas de calor, frío y semanas lluviosas.</p>
+        <div class="nav-card__preview">
+          <div class="nav-card__preview-label">Santiago ahora</div>
+          <div class="nav-card__preview-val" id="preview-santiago">Cargando…</div>
+        </div>
+        <span class="nav-card__cta">Ver todos los pronósticos <i class="bi bi-arrow-right"></i></span>
+      </a>
+
+      <!-- Noticias -->
+      <a href="./News.html" class="nav-card nav-card--news reveal reveal-d2">
+        <div class="nav-card__top"><span class="nav-card__dot"></span> Blog & noticias</div>
+        <i class="bi bi-newspaper nav-card__icon"></i>
+        <h3 class="nav-card__title">Noticias<br>y clima</h3>
+        <p class="nav-card__desc">Artículos, curiosidades meteorológicas y novedades sobre el tiempo en Latinoamérica. Mantente informado más allá del número.</p>
+        <div class="nav-card__preview">
+          <div class="nav-card__preview-label">Última nota</div>
+          <div class="nav-card__preview-val">¿Por qué el desierto de Atacama florece?</div>
+        </div>
+        <span class="nav-card__cta">Ir a noticias <i class="bi bi-arrow-right"></i></span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- About -->
+  <section class="section-about">
+    <div class="section-about__inner">
+      <div class="reveal">
+        <p class="section-label">Sobre el proyecto</p>
+        <h2 class="about__title">Hecho en Bootcamp,<br>para Chile</h2>
+        <p class="about__text">BootCamp Weather nació como proyecto formativo en el bootcamp de Desarrollo Front-End Trainee. La idea fue construir una app real, con datos reales, aplicando buenas prácticas de JavaScript orientado a objetos y arquitectura de estilos en SASS.</p>
+        <p class="about__text">La app consulta Open-Meteo sin registro ni API key, aplica caché local de 6 horas para minimizar llamadas, y adapta su paleta visual según la hora del día.</p>
+        <div class="about__pills">
+          <span class="pill">Vanilla JS</span>
+          <span class="pill">OOP / Clases</span>
+          <span class="pill">SASS / BEM</span>
+          <span class="pill">Bootstrap 5</span>
+          <span class="pill">Open-Meteo API</span>
+          <span class="pill">localStorage cache</span>
+        </div>
+      </div>
+      <div class="about__stats reveal reveal-d1">
+        <div class="stat-card"><div class="stat-card__num">16</div><div class="stat-card__label">Ciudades cubiertas</div></div>
+        <div class="stat-card"><div class="stat-card__num">7</div><div class="stat-card__label">Días de pronóstico</div></div>
+        <div class="stat-card"><div class="stat-card__num">6h</div><div class="stat-card__label">TTL de caché</div></div>
+        <div class="stat-card"><div class="stat-card__num">0</div><div class="stat-card__label">API keys necesarias</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    © 2026 BootCamp Weather — Mario Canto &nbsp;·&nbsp; Datos: Open-Meteo
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const WEATHER_CODES = {
+      0:"Despejado",1:"Casi despejado",2:"Parcialmente nublado",3:"Nublado",
+      45:"Con niebla",48:"Niebla helada",51:"Llovizna suave",53:"Llovizna",
+      55:"Llovizna fuerte",61:"Lluvia débil",63:"Lluvia",65:"Lluvia fuerte",
+      71:"Nieve débil",73:"Nieve",75:"Mucha nieve",77:"Granitos de nieve",
+      80:"Chubascos débiles",81:"Chubascos",82:"Chubascos fuertes",
+      95:"Tormenta eléctrica",96:"Tormenta c/ granizo",99:"Tormenta c/ granizo intenso",
+    };
+
+    const CODE_EMOJI = {
+      sunny:  "☀️", pcloudy: "⛅", cloudy: "☁️",
+      fog:    "🌫️", rain:    "🌧️", snowy:  "❄️", stormy: "⛈️",
+    };
+
+    function getIconClass(code) {
+      if (code===0||code===1)   return "bi bi-sun-fill";
+      if (code===2)             return "bi bi-cloud-sun-fill";
+      if (code===3)             return "bi bi-cloud-fill";
+      if (code===45||code===48) return "bi bi-cloud-fog2-fill";
+      if ([51,53,55,61,63,65,80,81].includes(code)) return "bi bi-cloud-rain-fill";
+      if ([71,73,75,77,85,86].includes(code))       return "bi bi-snow2";
+      if ([95,96,99].includes(code)) return "bi bi-cloud-lightning-rain-fill";
+      return "bi bi-thermometer-half";
+    }
+
+    function getCardClass(code) {
+      if (code===0||code===1)   return "weather-card--sunny";
+      if (code===2)             return "weather-card--p-cloudy";
+      if (code===3)             return "weather-card--cloudy";
+      if (code===45||code===48) return "weather-card--fog";
+      if ([51,53,55,61,63,65,80,81,82].includes(code)) return "weather-card--rain";
+      if ([71,73,75,77,85,86].includes(code))          return "weather-card--snowy";
+      if ([95,96,99].includes(code))                   return "weather-card--stormy";
+      return "";
+    }
+
+    function getEmoji(code) {
+      if (code===0||code===1)   return "☀️";
+      if (code===2)             return "⛅";
+      if (code===3)             return "☁️";
+      if (code===45||code===48) return "🌫️";
+      if ([51,53,55,61,63,65,80,81,82].includes(code)) return "🌧️";
+      if ([71,73,75,77,85,86].includes(code))          return "❄️";
+      if ([95,96,99].includes(code))                   return "⛈️";
+      return "🌡️";
+    }
+
+    // ── Tema horario (igual que WeatherApp.getThemeByTime) ─────
+    function getThemeByTime() {
+      const hour = new Date().getHours();
+      if (hour >= 6  && hour < 18) return "theme-day";
+      if (hour >= 18 && hour < 21) return "theme-afternoon";
+      return "theme-night";
+    }
+    const timeTheme = getThemeByTime();
+    document.body.classList.add(timeTheme);
+    // Aplica también a la hero card
+    document.getElementById('hero-card').classList.add(timeTheme);
+
+    document.getElementById('hero-date').textContent =
+      new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'short'});
+
+    const SANTIAGO_URL =
+      "https://api.open-meteo.com/v1/forecast" +
+      "?latitude=-33.4489&longitude=-70.6693" +
+      "&current=temperature_2m,weather_code" +
+      "&daily=temperature_2m_max,temperature_2m_min" +
+      "&timezone=America/Santiago&forecast_days=1";
+
+    async function loadHeroWeather() {
+      try {
+        const res  = await fetch(SANTIAGO_URL);
+        const data = await res.json();
+        const temp = data.current.temperature_2m;
+        const code = data.current.weather_code;
+        const max  = data.daily.temperature_2m_max[0];
+        const min  = data.daily.temperature_2m_min[0];
+        const desc = WEATHER_CODES[code] ?? "Desconocido";
+
+        const card = document.getElementById('hero-card');
+        card.classList.add(getCardClass(code));
+        document.getElementById('hero-icon').className = getIconClass(code) + " weather-main__icon";
+        document.getElementById('hero-temp').textContent = temp;
+        document.getElementById('hero-desc').textContent = desc;
+        document.getElementById('hero-min').textContent  = `↓ ${min}°C`;
+        document.getElementById('hero-max').textContent  = `↑ ${max}°C`;
+        document.getElementById('hero-loading').style.display = 'none';
+        document.getElementById('hero-data').style.display    = 'block';
+
+        document.getElementById('preview-santiago').textContent =
+          `${getEmoji(code)} ${temp}°C — ${desc}`;
+      } catch {
+        document.getElementById('hero-loading').innerHTML =
+          '<span style="opacity:.6;font-size:.8rem">Sin conexión a la API</span>';
+        document.getElementById('preview-santiago').textContent = 'No disponible';
+      }
+    }
+
+    loadHeroWeather();
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
