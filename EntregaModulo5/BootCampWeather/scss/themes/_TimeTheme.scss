@@ -1,0 +1,32 @@
+/* --- Estilos Base con Transiciones --- */
+body, .weather-card, .btn-detalles {
+  transition: all 0.8s ease-in-out; /* Cambio suave de colores */
+}
+
+/* --- Variaciones de la Card --- */
+.weather-card.theme-day {
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.weather-card.theme-afternoon {
+  background: linear-gradient(180deg, #f59e0b 0%, #9a3412 100%);
+}
+
+.weather-card.theme-night {
+  background: linear-gradient(180deg, #1e293b 0%, #020617 100%);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Mejora del Botón "Detalles" --- */
+.btn-detalles {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  color: white;
+  border-radius: 12px;
+  padding: 6px 16px;
+}
+
+.theme-afternoon .btn-detalles {
+  background: rgba(255, 255, 255, 0.3); /* Resalta más en el naranja */
+}
