@@ -167,6 +167,7 @@ const COUNTRIES = {
     apiUrl:   'https://api.open-meteo.com/v1/forecast?...',
   },
 }
+```
 Caché independiente por país
 País	Clave localStorage	TTL
 Chile	weatherCache_chile	6 horas
@@ -180,6 +181,7 @@ Argentina (24 ciudades)
 Buenos Aires · Córdoba · Rosario · Posadas · San Salvador de Jujuy · Catamarca · Formosa · Resistencia · Paraná · San Juan · San Luis · Santa Rosa · Neuquén · Rawson · Viedma · Río Gallegos · Ushuaia · Bahía Blanca · Sgo. del Estero · Tucumán · Salta · La Plata · Mendoza · La Rioja
 
 🏃 Cómo correr el proyecto localmente
+```
 bash
 # Clonar el repositorio
 git clone https://github.com/Mackelf/weather-frontend-m2.git
@@ -192,6 +194,7 @@ npm install
 
 # Correr en modo desarrollo
 npm run dev
+```
 ⚠️ No instalar en carpetas sincronizadas con Google Drive. Usar una carpeta local estándar.
 
 👤 Autor
