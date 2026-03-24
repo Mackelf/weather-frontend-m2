@@ -94,7 +94,7 @@ La app consulta todas las ciudades en **una sola petición** por país, enviando
 &daily=weather_code,temperature_2m_max,temperature_2m_min
 &timezone=America/Santiago
 
-
+text
 
 ---
 
@@ -105,7 +105,7 @@ Las estadísticas se calculan sobre los **próximos 7 días** del pronóstico (`
 ### Temperatura promedio semanal
 avgTemp = Σ((maxTemp[i] + minTemp[i]) / 2) / 7
 
-
+text
 
 ### Alertas automáticas
 
@@ -193,8 +193,6 @@ npm install
 # Correr en modo desarrollo
 npm run dev
 ⚠️ No instalar en carpetas sincronizadas con Google Drive. Usar una carpeta local estándar.
-
----
 
 👤 Autor
 Mario Canto
