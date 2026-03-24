@@ -195,3 +195,10 @@ export function saveWeatherData(countryKey, data) {
     new Date().toLocaleTimeString()
   )
 }
+
+export function getThemeByTime() {
+  const hour = new Date().getHours()
+  if (hour >= 6 && hour < 18) return 'theme-day'
+  if (hour >= 18 && hour < 21) return 'theme-afternoon'
+  return 'theme-night'
+}

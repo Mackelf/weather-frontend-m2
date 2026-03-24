@@ -1,17 +1,20 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
 import WeatherCard from '../components/WeatherCard.vue'
 import { COUNTRIES, localeMap } from '@/utils/weatherConfig'
 import {
   getWeather,
   getIconClass,
+  getThemeByTime,
   normalizeLocations,
   loadWeatherData,
   saveWeatherData,
+
 } from '@/utils/weatherHelpers'
 
 const router = useRouter()
+const route = useRoute()
 
 //logica de busqueda
 const searchTerm = ref('')
@@ -28,14 +31,21 @@ const filteredLugares = computed(() => {
 })
 
 
-
-
 const currentCountry = ref('chile')
 const lugares = ref([])
 const isLoading = ref(true)
 const error = ref(null)
 
 const currentConfig = computed(() => COUNTRIES[currentCountry.value])
+
+watch(currentCountry, () => {
+  lugares.value = []
+  searchTerm.value = ''
+  loadData()
+})
+
+
+
 
 async function loadData() {
   try {
@@ -77,7 +87,7 @@ async function loadData() {
           maxTemp: loc.maxTemp,
           iconClass,
           dateLabel: todayLabel,
-          theme: 'theme-day', // o tu getThemeByTime() si lo quieres reutilizar
+          theme: getThemeByTime(), // o tu getThemeByTime() si lo quieres reutilizar
           forecast: loc.forecast,
         }
       })
@@ -94,12 +104,14 @@ async function loadData() {
   }
 }
 
-onMounted(loadData)
-
-watch(currentCountry, () => {
-  lugares.value = []
+onMounted(() => {
+  const queryCountry = route.query.country
+  if (queryCountry && COUNTRIES[queryCountry]) {
+    currentCountry.value = queryCountry
+  }
   loadData()
 })
+
 
 function openDetails(lugar) {
   router.push({
@@ -155,7 +167,7 @@ function openDetails(lugar) {
         <div
           v-for="lugar in filteredLugares"
           :key="lugar.city"
-          class="col-sm-6 col-lg-3 d-flex justify-content-center mb-4"
+          class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center mb-4"
         >
           <WeatherCard
             :city="lugar.city"

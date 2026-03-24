@@ -3,6 +3,7 @@
 export const COUNTRIES = {
   chile: {
     label: 'Chile 🇨🇱',
+    capital: 'Santiago',
     cacheKey: 'weatherCache_chile',
     timezone: 'America/Santiago',
     cities: [
@@ -34,6 +35,7 @@ export const COUNTRIES = {
 
   argentina: {
     label: 'Argentina 🇦🇷',
+    capital: 'Buenos Aires',
     cacheKey: 'weatherCache_argentina',
     timezone: 'America/Argentina/Buenos_Aires',
     cities: [

@@ -1,12 +1,13 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import 'bootstrap/dist/css/bootstrap.min.css'
 </script>
 
 <template>
   <header>
     <h1><i class="bi bi-cloud-sun"></i>BootCamp Weather</h1>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div class="container-fluid">
         <RouterLink class="navbar-brand" to="/">HOME</RouterLink>
 
@@ -35,11 +36,29 @@ import { RouterLink } from 'vue-router'
               </RouterLink>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="#">Quienes somos</a>
+              <RouterLink class="nav-link" to="/about">
+                Quienes somos
+              </RouterLink>
             </li>
+              
           </ul>
         </div>
       </div>
     </nav>
   </header>
 </template>
+<style scoped>
+header {
+  padding: 0.75rem 1rem 0;
+}
+
+header h1 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+header h1 i {
+  margin-right: 0.4rem;
+}
+</style>
