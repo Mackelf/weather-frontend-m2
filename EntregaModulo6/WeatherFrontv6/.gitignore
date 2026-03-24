@@ -37,3 +37,15 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Windows
+desktop.ini
+Thumbs.db
+
+# Node
+node_modules/
+dist/
+
+# Editor
+.vscode/
+.DS_Store
