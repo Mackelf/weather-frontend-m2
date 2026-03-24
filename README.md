@@ -194,6 +194,8 @@ npm install
 npm run dev
 ⚠️ No instalar en carpetas sincronizadas con Google Drive. Usar una carpeta local estándar.
 
+---
+
 👤 Autor
 Mario Canto
 Técnico en T.I. reconvertido a Frontend Developer.
